@@ -13,14 +13,14 @@ export default {
     return {
       options: [{
         value: '0',
-        label: '应用搜索'
+        label: '知识搜索'
       }, {
         value: '1',
-        label: '移动搜索',
+        label: '应用搜索',
         disabled: true
       }, {
         value: '1',
-        label: '知识搜索',
+        label: '移动搜索',
         disabled: true
       }],
       value: '0'
