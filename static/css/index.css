@@ -1,0 +1,19 @@
+body,
+form,
+html,
+img,
+input,
+p,
+span {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-family: SimHei
+}
+.icon {
+    width: 1em;
+    height: 1em;
+    vertical-align: -0.15em;
+    fill: currentColor;
+    overflow: hidden;
+ }

@@ -1,12 +1,13 @@
 <template>
   <div id="app">
-    <img src="./assets/logo.png">
     <router-view></router-view>
   </div>
 </template>
 
 <script>
+import store from '@/store/store.js'
 export default {
+  store,
   name: 'app'
 }
 </script>
