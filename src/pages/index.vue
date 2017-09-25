@@ -58,9 +58,7 @@ export default {
   }
 }
 
-
 /* TODO */
-
 @media screen and (min-width:770px) and (max-width:1120px) {
   .logo-img {
     width: 20%;
@@ -69,10 +67,7 @@ export default {
   }
 }
 
-
-
 /* TODO */
-
 @media screen and (max-width:770px) {
   .logo-img {
     width: 20%;
