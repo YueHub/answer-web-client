@@ -3,7 +3,7 @@
     <!-- 搜索引擎选择 -->
     <search-type-select class="inline-block search-bar-type-select" :defaultValue="'0'" :selectOptions="selectOptions">
     </search-type-select>
-    
+
     <div class="search-input-text-btn">
       <!-- 搜索串文本输入框 -->
       <search-input-text ref="searchInputText" :searchBarTextValue="searchBarTextValue" @inputTextChangeListener="searchBarTextChange" @inputTextEnterListener="searchBarTextEnter">
@@ -50,7 +50,7 @@ export default {
     ...mapState(['searchQuery']),
     ...mapGetters(['getSearchActiveTag'])
   },
-  mounted() {
+  created() {
     this.searchBarTextValue = this.searchQuery
   },
   methods: {

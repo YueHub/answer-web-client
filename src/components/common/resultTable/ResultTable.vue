@@ -1,56 +1,53 @@
 <template>
-  <div class="k">
+  <table class="bt" border="1" style='text-align:center;'>
+    <tbody>
+      <tr class="th">
+        <th class="tn tny">实体</th>
+        <th width='70%'>歧义理解</th>
+        <th width='30%'>所属类</th>
+      </tr>
 
-    <table class="bt" border="1" style='text-align:center;'>
-      <tbody>
-        <tr class="th">
-          <th class="tn tny">实体</th>
-          <th width='70%'>歧义理解</th>
-          <th width='30%'>所属类</th>
-        </tr>
+      <tr class="trh">
+        <td class="tn">
+          <a href="${pageContext.request.contextPath}/front/developerAction!answer.action?question=<s:property value='#word.name'/>" class="lk" target="_blank">
+            <span style='font-family:"SimHei";font-weight:bold;'>
+              美人鱼
+            </span>
+          </a>
+        </td>
+        <td>
+          <span style='font-family:"SimHei";'>
+            2016年周星驰执导3D喜剧电影
+          </span>
+        </td>
+        <td>
+          <span style='font-family:"SimHei";'>
+            电影
+          </span>
+        </td>
+      </tr>
 
-        <tr class="trh">
-          <td class="tn">
-            <a href="${pageContext.request.contextPath}/front/developerAction!answer.action?question=<s:property value='#word.name'/>" class="lk" target="_blank">
-              <span style='font-family:"SimHei";font-weight:bold;'>
-                美人鱼
-              </span>
-            </a>
-          </td>
-          <td>
-            <span style='font-family:"SimHei";'>
-              2016年周星驰执导3D喜剧电影
+      <tr>
+        <td class="tn">
+          <a href="${pageContext.request.contextPath}/front/developerAction!answer.action?question=<s:property value='#word.name'/>" class="lk" target="_blank">
+            <span style='font-family:"SimHei";font-weight:bold;'>
+              美人鱼
             </span>
-          </td>
-          <td>
-            <span style='font-family:"SimHei";'>
-              电影
-            </span>
-          </td>
-        </tr>
-
-        <tr>
-          <td class="tn">
-            <a href="${pageContext.request.contextPath}/front/developerAction!answer.action?question=<s:property value='#word.name'/>" class="lk" target="_blank">
-              <span style='font-family:"SimHei";font-weight:bold;'>
-                美人鱼
-              </span>
-            </a>
-          </td>
-          <td>
-            <span style='font-family:"SimHei";'>
-              周杰伦创作歌曲
-            </span>
-          </td>
-          <td>
-            <span style='font-family:"SimHei";'>
-              音乐
-            </span>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
+          </a>
+        </td>
+        <td>
+          <span style='font-family:"SimHei";'>
+            周杰伦创作歌曲
+          </span>
+        </td>
+        <td>
+          <span style='font-family:"SimHei";'>
+            音乐
+          </span>
+        </td>
+      </tr>
+    </tbody>
+  </table>
 </template>
 <script>
 export default {
@@ -59,16 +56,6 @@ export default {
 </script>
 
 <style>
-.k {
-  position: relative;
-  margin-top: 15px;
-  width: 100%;
-  background-color: #FFF;
-  -moz-box-shadow: 0 1px 3px rgba(0, 0, 0, .3);
-  -webkit-box-shadow: 0 1px 3px rgba(0, 0, 0, .3);
-  box-shadow: 0 1px 3px rgb(51, 133, 255);
-}
-
 .bt {
   overflow: hidden;
   display: block;

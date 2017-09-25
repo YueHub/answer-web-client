@@ -10,7 +10,7 @@
 
     <br><br><br>
     <div>
-      <tag></tag>
+      <result-tag></result-tag>
     </div>
 
     <br><br><br>
@@ -26,7 +26,7 @@ import searchBar from '@/components/common/searchBar/SearchBar'
 
 import resultTable from '@/components/common/resultTable/ResultTable'
 
-import tag from '@/components/common/tag/tag'
+import resultTag from '@/components/common/tag/resultTag'
 
 import knowledgeGraph from '@/components/common/graph/KnowledgeGraph'
 
@@ -34,7 +34,7 @@ export default {
   components: {
     'search-bar': searchBar,
     'result-table': resultTable,
-    'tag': tag,
+    'result-tag': resultTag,
     'knowledge-graph': knowledgeGraph
   }
 }
