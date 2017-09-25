@@ -1,7 +1,7 @@
 <template>
-  <div>
-    <button class="search-btn" @click="searchBtnClick">搜索</button>
-  </div>
+  <button class="search-btn" @click="searchBtnClick">
+    搜索
+  </button>
 </template>
 
 <script scoped>
@@ -15,17 +15,27 @@ export default {
 </script>
 
 <style scoped>
+
 .search-btn {
+  /* Positioning 位置相关 */
   position: absolute;
-  border: 0px;
+  top: 0;
+  right: 0px;
+
+  /* Box model 尺寸相关 */
   width: 100px;
   height: 40px;
-  color: white;
+  border: 0px;
+  border-bottom: 1px solid #2d78f4;
+
+  /* Typographic 文本相关 */
   font-size: 15px;
   letter-spacing: 1px;
-  background: #3385ff;
-  border-bottom: 1px solid #2d78f4;
   outline: medium;
+  
+  /* Visual 视觉效果 */
+  background: #3385ff;
+  color: white;
   -webkit-appearance: none;
   cursor: pointer;
 }
@@ -36,43 +46,19 @@ export default {
 
 @media screen and (min-width: 1120px) {
   .search-btn {
-    position: absolute;
-    top: 0;
-    right: 0px;
-    width: 14.84%;
-    background-position: -264px 0;
-    background-size: 304px 128px;
-    background-repeat: no-repeat;
-    padding: 0;
-    margin: 0
+    width: 15%;
   }
 }
 
 @media screen and (min-width:770px) and (max-width:1120px) {
   .search-btn {
-    position: absolute;
-    top: 0;
-    right: 0px;
-    width: 14.84%;
-    background-position: -264px 0;
-    background-size: 304px 128px;
-    background-repeat: no-repeat;
-    padding: 0;
-    margin: 0
+    width: 15%;
   }
 }
 
 @media screen and (max-width:770px) {
   .search-btn {
-    position: absolute;
-    top: 0;
-    right: 0px;
-    width: 14.84%;
-    background-position: -264px 0;
-    background-size: 304px 128px;
-    background-repeat: no-repeat;
-    padding: 0;
-    margin: 0
+    width: 20%;
   }
 }
 </style>

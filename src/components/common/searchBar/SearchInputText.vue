@@ -1,88 +1,101 @@
 <template>
-  <div class="mobile-line">
-    <input id="search-input-text" class="search-input-text mobile-line" @keyup.enter="inputTextEnter" type="text" placeholder="音乐 / 美食 / 阅读 / 商城..." v-model="searchInputTextValue" @change="inputTextChange" maxlength="50">
+  <div class="search-input-text">
+    <input id="search-input-text" type="text" placeholder="音乐 / 美食 / 阅读 / 电影..." v-model="searchInputTextValue" @keyup.enter="inputTextEnter" @input="inputTextChange" @change="inputTextChange" maxlength="50">
   </div>
 </template>
 
 <script scoped>
 
 export default {
-  props: ['searchBarTextValue', 'inputTextShift'],
+  props: ['inputTextShift', 'searchBarTextValue'],
   data() {
     return {
       searchInputTextValue: this.searchBarTextValue,
     }
   },
   methods: {
-    moveText: function(shift) {
-      var paddingVal = '11px 0px 10px ' + shift + '%'
-      document.getElementById('search-input-text').style.padding = paddingVal
-    },
-
     inputTextChange: function() {
       this.$emit('inputTextChangeListener', this.searchInputTextValue);
     },
     inputTextEnter: function() {
       this.$emit('inputTextEnterListener')
+    },
+    moveText: function(shift) {
+      var paddingVal = '11px 0px 10px ' + shift + '%'
+      document.getElementById('search-input-text').style.padding = paddingVal
     }
   }
 }
 </script>
 
 <style scoped>
-.mobile-line {
-  -moz-box-shadow: 0 0 3px #3385ff;
-  -webkit-box-shadow: 0 0 3px #3385ff;
-  box-shadow: 0 0 3px #3385ff;
-}
-
-.mobile-line:focus {
-  -moz-box-shadow: 0 0 10px #3385ff;
-  -webkit-box-shadow: 0 0 10px #3385ff;
-  box-shadow: 0 0 10px #3385ff;
-}
-
 .search-input-text {
-  /* padding: 11px 0px 10px 9px; */
+  /* Positioning 位置相关 */
+  /* Box model 尺寸相关 */
   width: 100%;
   height: 40px;
-  background: #FFFFFF;
-  color: #000;
+  /* padding: 0px 0px 0px 9px; */
+  border-radius: 0;
+
+  /* Typographic 文本相关 */
   outline: 0;
   font: 17px arial;
   line-height: 22px;
+
+  /* Visual 视觉效果 */
+  background: #FFFFFF;
+  color: #000;
+  -moz-box-shadow: 0 0 8px #3385ff;
+  -webkit-box-shadow: 0 0 8px #3385ff;
+  box-shadow: 0 0 8px #3385ff;
+}
+
+#search-input-text {
+  /* Positioning 位置相关 */
+  /* Box model 尺寸相关 */
+  width: 98%;
+  height: 100%;
+  padding-left: 2%;
   border-radius: 0;
-  -moz-box-shadow: 0 0 10px #3385ff;
-  -webkit-box-shadow: 0 0 10px #3385ff;
-  box-shadow: 0 0 10px #3385ff;
+
+  /* Typographic 文本相关 */
+  outline: 0;
+  font: 17px arial;
+  line-height: 22px;
+
+  /* Visual 视觉效果 */
+  background: #FFFFFF;
+  color: #000;
 }
 
-.search-input-text:focus {
-  -moz-box-shadow: 0 0 18px #3385ff;
-  -webkit-box-shadow: 0 0 18px #3385ff;
-  box-shadow: 0 0 18px #3385ff;
+#search-input-text:focus {
+  -moz-box-shadow: 0 0 7px #3385ff;
+  -webkit-box-shadow: 0 0 7px #3385ff;
+  box-shadow: 0 0 7px #3385ff;
 }
 
-/* placeholder 斜体 */
 
-.search-input-text::-webkit-input-placeholder {
-  font-style: italic;
+
+/* placeholder  */
+
+#search-input-text::-webkit-input-placeholder {
   padding-left: 6px;
+  font-style: italic;
 }
 
-.search-input-text:-moz-placeholder {
-  font-style: italic;
+#search-input-text:-moz-placeholder {
   padding-left: 6px;
+  font-style: italic;
 }
 
-.search-input-text::-moz-placeholder {
-  font-style: italic;
+#search-input-text::-moz-placeholder {
   padding-left: 6px;
+  font-style: italic;
 }
 
-.search-input-text:-ms-input-placeholder {
-  font-style: italic;
+#search-input-text:-ms-input-placeholder {
   padding-left: 6px;
+  font-style: italic;
 }
 </style>
 

@@ -1,9 +1,9 @@
 <template>
   <div>
     <!-- 搜索引擎选择 -->
-    <search-type-select class="inline-block search-bar-type-select">
-
+    <search-type-select class="inline-block search-bar-type-select" :defaultValue="'0'" :selectOptions="selectOptions">
     </search-type-select>
+    
     <div class="search-input-text-btn">
       <!-- 搜索串文本输入框 -->
       <search-input-text ref="searchInputText" :searchBarTextValue="searchBarTextValue" @inputTextChangeListener="searchBarTextChange" @inputTextEnterListener="searchBarTextEnter">
@@ -17,6 +17,8 @@
 </template>
 
 <script scoped>
+import { mapState, mapGetters } from 'vuex'
+
 import searchTypeSelect from '@/components/common/searchBar/SearchTypeSelect'
 import searchInputText from '@/components/common/searchBar/SearchInputText'
 import searchBtn from '@/components/common/searchBar/SearchBtn'
@@ -29,8 +31,27 @@ export default {
   },
   data() {
     return {
-      searchBarTextValue: this.$store.state.searchQuery,
+      selectOptions: [{
+        value: '0',
+        label: '知识搜索'
+      }, {
+        value: '1',
+        label: '应用搜索',
+        disabled: true
+      }, {
+        value: '2',
+        label: '移动搜索',
+        disabled: true
+      }],
+      searchBarTextValue: this.searchQuery
     }
+  },
+  computed: {
+    ...mapState(['searchQuery']),
+    ...mapGetters(['getSearchActiveTag'])
+  },
+  mounted() {
+    this.searchBarTextValue = this.searchQuery
   },
   methods: {
     moveText: function(shift) {

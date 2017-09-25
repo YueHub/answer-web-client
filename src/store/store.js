@@ -8,6 +8,13 @@ const state = {
     '周杰伦和昆凌?', '美人鱼导演的出生日期?', '北京大学?', '习近平的出生日期?', '周杰伦是哪里的人?', '死神的作者是谁?'],  // TagCloudWords 
 }
 
+const mutations = {
+  // 设置用户搜索字符串
+  setSearchQuery: function (state, payload) {
+    state.searchQuery = payload.searchQuery
+  }
+}
+
 export default new Vuex.Store({
-  state
+  state, mutations
 })
