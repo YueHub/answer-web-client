@@ -9,6 +9,14 @@ function resolve (dir) {
 }
 
 module.exports = {
+  plugins: [
+    new webpack.ProvidePlugin({
+      $: 'jquery',
+      jquery: 'jquery',
+      'window.jQuery': 'jquery',
+      jQuery: 'jquery'
+    })
+  ],
   entry: {
     app: './src/main.js'
   },

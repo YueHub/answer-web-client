@@ -28,8 +28,8 @@
 //
 
 (function ($) {
-
-	/*        etc.js */
+	var arbor
+	/* etc.js */
 	var trace = function (msg) {
 		if (typeof(window) == "undefined" || !window.console) {
 			return
@@ -1815,5 +1815,5 @@
 			arbor_path : arbor_path, // ƒ() -> guess the directory of the lib code
 		}
 	})
-
+	window.arbor = arbor
 })(this.jQuery)

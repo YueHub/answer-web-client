@@ -1,6 +1,6 @@
 //
-//  arbor-tween.js
-//  smooth transitions with a realtime clock
+//  arbor-graphics.js
+//  canvas fructose
 //
 //  Copyright (c) 2011 Samizdat Drafting Co.
 //
@@ -26,39 +26,9 @@
 //  OTHER DEALINGS IN THE SOFTWARE.
 //
 
-//  Easing Equations in easing.js:
-//  Copyright © 2001 Robert Penner. All rights reserved.
-//
-//  Open source under the BSD License. Redistribution and use in source
-//  and binary forms, with or without modification, are permitted
-//  provided that the following conditions are met:
-//
-//  Redistributions of source code must retain the above copyright
-//  notice, this list of conditions and the following disclaimer.
-//  Redistributions in binary form must reproduce the above copyright
-//  notice, this list of conditions and the following disclaimer in the
-//  documentation and/or other materials provided with the distribution.
-//
-//  Neither the name of the author nor the names of contributors may be
-//  used to endorse or promote products derived from this software
-//  without specific prior written permission.
-//
-//  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
-//  "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
-//  LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
-//  A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
-//  OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
-//  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
-//  LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
-//  DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
-//  THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-//  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
-//  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-
-
 (function ($) {
-
-	/*    etc.js */
+	var arbor = window.arbor
+	/*        etc.js */
 	var trace = function (msg) {
 		if (typeof(window) == "undefined" || !window.console) {
 			return
@@ -243,7 +213,7 @@
 			return null
 		}
 	};
-	/* colors.js */
+	/*     colors.js */
 	var Colors = (function () {
 		var f = /#[0-9a-f]{6}/i;
 		var b = /#(..)(..)(..)/;
@@ -532,404 +502,550 @@
 		};
 		return e
 	})();
-	/* easing.js */
-	var Easing = (function () {
-		var a = {
-			linear : function (f, e, h, g) {
-				return h * (f / g) + e
-			},
-			quadin : function (f, e, h, g) {
-				return h * (f /= g) * f + e
-			},
-			quadout : function (f, e, h, g) {
-				return -h * (f /= g) * (f - 2) + e
-			},
-			quadinout : function (f, e, h, g) {
-				if ((f /= g / 2) < 1) {
-					return h / 2 * f * f + e
-				}
-				return -h / 2 * ((--f) * (f - 2) - 1) + e
-			},
-			cubicin : function (f, e, h, g) {
-				return h * (f /= g) * f * f + e
-			},
-			cubicout : function (f, e, h, g) {
-				return h * ((f = f / g - 1) * f * f + 1) + e
-			},
-			cubicinout : function (f, e, h, g) {
-				if ((f /= g / 2) < 1) {
-					return h / 2 * f * f * f + e
-				}
-				return h / 2 * ((f -= 2) * f * f + 2) + e
-			},
-			quartin : function (f, e, h, g) {
-				return h * (f /= g) * f * f * f + e
-			},
-			quartout : function (f, e, h, g) {
-				return -h * ((f = f / g - 1) * f * f * f - 1) + e
-			},
-			quartinout : function (f, e, h, g) {
-				if ((f /= g / 2) < 1) {
-					return h / 2 * f * f * f * f + e
-				}
-				return -h / 2 * ((f -= 2) * f * f * f - 2) + e
-			},
-			quintin : function (f, e, h, g) {
-				return h * (f /= g) * f * f * f * f + e
-			},
-			quintout : function (f, e, h, g) {
-				return h * ((f = f / g - 1) * f * f * f * f + 1) + e
-			},
-			quintinout : function (f, e, h, g) {
-				if ((f /= g / 2) < 1) {
-					return h / 2 * f * f * f * f * f + e
-				}
-				return h / 2 * ((f -= 2) * f * f * f * f + 2) + e
-			},
-			sinein : function (f, e, h, g) {
-				return -h * Math.cos(f / g * (Math.PI / 2)) + h + e
-			},
-			sineout : function (f, e, h, g) {
-				return h * Math.sin(f / g * (Math.PI / 2)) + e
-			},
-			sineinout : function (f, e, h, g) {
-				return -h / 2 * (Math.cos(Math.PI * f / g) - 1) + e
-			},
-			expoin : function (f, e, h, g) {
-				return (f == 0) ? e : h * Math.pow(2, 10 * (f / g - 1)) + e
-			},
-			expoout : function (f, e, h, g) {
-				return (f == g) ? e + h : h * (-Math.pow(2, -10 * f / g) + 1) + e
-			},
-			expoinout : function (f, e, h, g) {
-				if (f == 0) {
-					return e
-				}
-				if (f == g) {
-					return e + h
-				}
-				if ((f /= g / 2) < 1) {
-					return h / 2 * Math.pow(2, 10 * (f - 1)) + e
-				}
-				return h / 2 * (-Math.pow(2, -10 * --f) + 2) + e
-			},
-			circin : function (f, e, h, g) {
-				return -h * (Math.sqrt(1 - (f /= g) * f) - 1) + e
-			},
-			circout : function (f, e, h, g) {
-				return h * Math.sqrt(1 - (f = f / g - 1) * f) + e
-			},
-			circinout : function (f, e, h, g) {
-				if ((f /= g / 2) < 1) {
-					return -h / 2 * (Math.sqrt(1 - f * f) - 1) + e
-				}
-				return h / 2 * (Math.sqrt(1 - (f -= 2) * f) + 1) + e
-			},
-			elasticin : function (g, e, k, j) {
-				var h = 1.70158;
-				var i = 0;
-				var f = k;
-				if (g == 0) {
-					return e
-				}
-				if ((g /= j) == 1) {
-					return e + k
-				}
-				if (!i) {
-					i = j * 0.3
-				}
-				if (f < Math.abs(k)) {
-					f = k;
-					var h = i / 4
-				} else {
-					var h = i / (2 * Math.PI) * Math.asin(k / f)
-				}
-				return  - (f * Math.pow(2, 10 * (g -= 1)) * Math.sin((g * j - h) * (2 * Math.PI) / i)) + e
-			},
-			elasticout : function (g, e, k, j) {
-				var h = 1.70158;
-				var i = 0;
-				var f = k;
-				if (g == 0) {
-					return e
-				}
-				if ((g /= j) == 1) {
-					return e + k
-				}
-				if (!i) {
-					i = j * 0.3
-				}
-				if (f < Math.abs(k)) {
-					f = k;
-					var h = i / 4
-				} else {
-					var h = i / (2 * Math.PI) * Math.asin(k / f)
-				}
-				return f * Math.pow(2, -10 * g) * Math.sin((g * j - h) * (2 * Math.PI) / i) + k + e
-			},
-			elasticinout : function (g, e, k, j) {
-				var h = 1.70158;
-				var i = 0;
-				var f = k;
-				if (g == 0) {
-					return e
-				}
-				if ((g /= j / 2) == 2) {
-					return e + k
-				}
-				if (!i) {
-					i = j * (0.3 * 1.5)
-				}
-				if (f < Math.abs(k)) {
-					f = k;
-					var h = i / 4
-				} else {
-					var h = i / (2 * Math.PI) * Math.asin(k / f)
-				}
-				if (g < 1) {
-					return -0.5 * (f * Math.pow(2, 10 * (g -= 1)) * Math.sin((g * j - h) * (2 * Math.PI) / i)) + e
-				}
-				return f * Math.pow(2, -10 * (g -= 1)) * Math.sin((g * j - h) * (2 * Math.PI) / i) * 0.5 + k + e
-			},
-			backin : function (f, e, i, h, g) {
-				if (g == undefined) {
-					g = 1.70158
-				}
-				return i * (f /= h) * f * ((g + 1) * f - g) + e
-			},
-			backout : function (f, e, i, h, g) {
-				if (g == undefined) {
-					g = 1.70158
-				}
-				return i * ((f = f / h - 1) * f * ((g + 1) * f + g) + 1) + e
-			},
-			backinout : function (f, e, i, h, g) {
-				if (g == undefined) {
-					g = 1.70158
-				}
-				if ((f /= h / 2) < 1) {
-					return i / 2 * (f * f * (((g *= (1.525)) + 1) * f - g)) + e
-				}
-				return i / 2 * ((f -= 2) * f * (((g *= (1.525)) + 1) * f + g) + 2) + e
-			},
-			bouncein : function (f, e, h, g) {
-				return h - a.bounceOut(g - f, 0, h, g) + e
-			},
-			bounceout : function (f, e, h, g) {
-				if ((f /= g) < (1 / 2.75)) {
-					return h * (7.5625 * f * f) + e
-				} else {
-					if (f < (2 / 2.75)) {
-						return h * (7.5625 * (f -= (1.5 / 2.75)) * f + 0.75) + e
-					} else {
-						if (f < (2.5 / 2.75)) {
-							return h * (7.5625 * (f -= (2.25 / 2.75)) * f + 0.9375) + e
-						} else {
-							return h * (7.5625 * (f -= (2.625 / 2.75)) * f + 0.984375) + e
-						}
-					}
-				}
-			},
-			bounceinout : function (f, e, h, g) {
-				if (f < g / 2) {
-					return a.bounceIn(f * 2, 0, h, g) * 0.5 + e
-				}
-				return a.bounceOut(f * 2 - g, 0, h, g) * 0.5 + h * 0.5 + e
-			}
+	/* primitives.js */
+	var Primitives = function (c, f, g) {
+		var b = function (i, m, j, l, k) {
+			this.x = i;
+			this.y = m;
+			this.w = j;
+			this.h = l;
+			this.style = (k !== undefined) ? k : {}
+
 		};
-		return a
-	})();
-	/*  tween.js */
-	var Tween = function () {
-		var a = {};
-		var c = true;
-		var b = {
-			init : function () {
-				return b
+		b.prototype = {
+			draw : function (h) {
+				this._draw(h)
 			},
-			busy : function () {
-				var e = false;
-				for (var d in a) {
-					e = true;
-					break
+			_draw : function (i, n, j, l, k) {
+				if (objcontains(i, "stroke", "fill", "width")) {
+					k = i
 				}
-				return e
-			},
-			to : function (g, e, p) {
-				var f = new Date().valueOf();
-				var d = {};
-				var q = {
-					from : {},
-					to : {},
-					colors : {},
-					node : g,
-					t0 : f,
-					t1 : f + e * 1000,
-					dur : e * 1000
-				};
-				var o = "linear";
-				for (var j in p) {
-					if (j == "easing") {
-						var h = p[j].toLowerCase();
-						if (h in Easing) {
-							o = h
-						}
-						continue
-					} else {
-						if (j == "delay") {
-							var m = (p[j] || 0) * 1000;
-							q.t0 += m;
-							q.t1 += m;
-							continue
-						}
-					}
-					if (Colors.validate(p[j])) {
-						q.colors[j] = [Colors.decode(g.data[j]), Colors.decode(p[j]), p[j]];
-						d[j] = true
-					} else {
-						q.from[j] = (g.data[j] != undefined) ? g.data[j] : p[j];
-						q.to[j] = p[j];
-						d[j] = true
-					}
+				if (this.x !== undefined) {
+					i = this.x,
+					n = this.y,
+					j = this.w,
+					l = this.h;
+					k = objmerge(this.style, k)
 				}
-				q.ease = Easing[o];
-				if (a[g._id] === undefined) {
-					a[g._id] = []
-				}
-				a[g._id].push(q);
-				if (a.length > 1) {
-					for (var l = a.length - 2; l >= 0; l++) {
-						var n = a[l];
-						for (var j in n.to) {
-							if (j in d) {
-								delete n.to[j]
-							} else {
-								d[j] = true
-							}
-						}
-						for (var j in n.colors) {
-							if (j in d) {
-								delete n.colors[j]
-							} else {
-								d[j] = true
-							}
-						}
-						if ($.isEmptyObject(n.colors) && $.isEmptyObject(n.to)) {
-							a.splice(l, 1)
-						}
-					}
-				}
-				c = false
-			},
-			interpolate : function (e, h, i, g) {
-				g = (g || "").toLowerCase();
-				var d = Easing.linear;
-				if (g in Easing) {
-					d = Easing[g]
-				}
-				var f = d(e, 0, 1, 1);
-				if (Colors.validate(h) && Colors.validate(i)) {
-					return lerpRGB(f, h, i)
-				} else {
-					if (!isNaN(h)) {
-						return lerpNumber(f, h, i)
-					} else {
-						if (typeof h == "string") {
-							return (f < 0.5) ? h : i
-						}
-					}
-				}
-			},
-			tick : function () {
-				var f = true;
-				for (var d in a) {
-					f = false;
-					break
-				}
-				if (f) {
+				k = objmerge(f, k);
+				if (!k.stroke && !k.fill) {
 					return
 				}
-				var e = new Date().valueOf();
-				$.each(a, function (i, h) {
-					var g = false;
-					$.each(h, function (p, t) {
-						var o = t.ease((e - t.t0), 0, 1, t.dur);
-						o = Math.min(1, o);
-						var r = t.from;
-						var s = t.to;
-						var j = t.colors;
-						var l = t.node.data;
-						var m = (o == 1);
-						for (var n in s) {
-							switch (typeof s[n]) {
-							case "number":
-								l[n] = lerpNumber(o, r[n], s[n]);
-								if (n == "alpha") {
-									l[n] = Math.max(0, Math.min(1, l[n]))
-								}
-								break;
-							case "string":
-								if (m) {
-									l[n] = s[n]
-								}
-								break
+				var m = 0.5522848;
+				ox = (j / 2) * m,
+				oy = (l / 2) * m,
+				xe = i + j,
+				ye = n + l,
+				xm = i + j / 2,
+				ym = n + l / 2;
+				c.save();
+				c.beginPath();
+				c.moveTo(i, ym);
+				c.bezierCurveTo(i, ym - oy, xm - ox, n, xm, n);
+				c.bezierCurveTo(xm + ox, n, xe, ym - oy, xe, ym);
+				c.bezierCurveTo(xe, ym + oy, xm + ox, ye, xm, ye);
+				c.bezierCurveTo(xm - ox, ye, i, ym + oy, i, ym);
+				c.closePath();
+				if (k.fill !== null) {
+					if (k.alpha !== undefined) {
+						c.fillStyle = Colors.blend(k.fill, k.alpha)
+					} else {
+						c.fillStyle = Colors.encode(k.fill)
+					}
+					c.fill()
+				}
+				if (k.stroke !== null) {
+					c.strokeStyle = Colors.encode(k.stroke);
+					if (!isNaN(k.width)) {
+						c.lineWidth = k.width
+					}
+					c.stroke()
+				}
+				c.restore()
+			}
+		};
+		var a = function (i, n, j, l, m, k) {
+			if (objcontains(m, "stroke", "fill", "width")) {
+				k = m;
+				m = 0
+			}
+			this.x = i;
+			this.y = n;
+			this.w = j;
+			this.h = l;
+			this.r = (m !== undefined) ? m : 0;
+			this.style = (k !== undefined) ? k : {}
+
+		};
+		a.prototype = {
+			draw : function (h) {
+				this._draw(h)
+			},
+			_draw : function (j, o, k, m, n, l) {
+				if (objcontains(n, "stroke", "fill", "width", "alpha")) {
+					l = n;
+					n = 0
+				} else {
+					if (objcontains(j, "stroke", "fill", "width", "alpha")) {
+						l = j
+					}
+				}
+				if (this.x !== undefined) {
+					j = this.x,
+					o = this.y,
+					k = this.w,
+					m = this.h;
+					l = objmerge(this.style, l)
+				}
+				l = objmerge(f, l);
+				if (!l.stroke && !l.fill) {
+					return
+				}
+				var i = (n > 0);
+				c.save();
+				c.beginPath();
+				c.moveTo(j + n, o);
+				c.lineTo(j + k - n, o);
+				if (i) {
+					c.quadraticCurveTo(j + k, o, j + k, o + n)
+				}
+				c.lineTo(j + k, o + m - n);
+				if (i) {
+					c.quadraticCurveTo(j + k, o + m, j + k - n, o + m)
+				}
+				c.lineTo(j + n, o + m);
+				if (i) {
+					c.quadraticCurveTo(j, o + m, j, o + m - n)
+				}
+				c.lineTo(j, o + n);
+				if (i) {
+					c.quadraticCurveTo(j, o, j + n, o)
+				}
+				if (l.fill !== null) {
+					if (l.alpha !== undefined) {
+						c.fillStyle = Colors.blend(l.fill, l.alpha)
+					} else {
+						c.fillStyle = Colors.encode(l.fill)
+					}
+					c.fill()
+				}
+				if (l.stroke !== null) {
+					c.strokeStyle = Colors.encode(l.stroke);
+					if (!isNaN(l.width)) {
+						c.lineWidth = l.width
+					}
+					c.stroke()
+				}
+				c.restore()
+			}
+		};
+		var e = function (i, l, h, j, k) {
+			if (k !== undefined || typeof j == "number") {
+				this.points = [{
+						x : i,
+						y : l
+					}, {
+						x : h,
+						y : j
+					}
+				];
+				this.style = k || {}
+
+			} else {
+				if ($.isArray(i)) {
+					this.points = i;
+					this.style = l || {}
+
+				} else {
+					this.points = [i, l];
+					this.style = h || {}
+
+				}
+			}
+		};
+		e.prototype = {
+			draw : function (h) {
+				if (this.points.length < 2) {
+					return
+				}
+				var j = [];
+				if (!$.isArray(this.points[0])) {
+					j.push(this.points)
+				} else {
+					j = this.points
+				}
+				c.save();
+				c.beginPath();
+				$.each(j, function (n, m) {
+					c.moveTo(m[0].x + 0.5, m[0].y + 0.5);
+					$.each(m, function (o, p) {
+						if (o == 0) {
+							return
+						}
+						c.lineTo(p.x + 0.5, p.y + 0.5)
+					})
+				});
+				var i = $.extend(objmerge(f, this.style), h);
+				if (i.closed) {
+					c.closePath()
+				}
+				if (i.fill !== undefined) {
+					var l = Colors.decode(i.fill, (i.alpha !== undefined) ? i.alpha : 1);
+					if (l) {
+						c.fillStyle = Colors.encode(l)
+					}
+					c.fill()
+				}
+				if (i.stroke !== undefined) {
+					var k = Colors.decode(i.stroke, (i.alpha !== undefined) ? i.alpha : 1);
+					if (k) {
+						c.strokeStyle = Colors.encode(k)
+					}
+					if (!isNaN(i.width)) {
+						c.lineWidth = i.width
+					}
+					c.stroke()
+				}
+				c.restore()
+			}
+		};
+		var d = function (i, h, l, k) {
+			var j = Colors.decode(i, h, l, k);
+			if (j) {
+				this.r = j.r;
+				this.g = j.g;
+				this.b = j.b;
+				this.a = j.a
+			}
+		};
+		d.prototype = {
+			toString : function () {
+				return Colors.encode(this)
+			},
+			blend : function () {
+				trace("blend", this.r, this.g, this.b, this.a)
+			}
+		};
+		return {
+			_Oval : b,
+			_Rect : a,
+			_Color : d,
+			_Path : e
+		}
+	};
+	/*   graphics.js */
+	var Graphics = function (c) {
+		var h = $(c);
+		var q = $(h).get(0).getContext("2d");
+		var i = null;
+		var l = "rgb";
+		var e = "origin";
+		var m = {};
+		var p = {
+			background : null,
+			fill : null,
+			stroke : null,
+			width : 0
+		};
+		var b = {};
+		var g = {
+			font : "sans-serif",
+			size : 12,
+			align : "left",
+			color : Colors.decode("black"),
+			alpha : 1,
+			baseline : "ideographic"
+		};
+		var k = [];
+		var o = Primitives(q, p, g);
+		var f = o._Oval;
+		var n = o._Rect;
+		var d = o._Color;
+		var a = o._Path;
+		var j = {
+			init : function () {
+				if (!q) {
+					return null
+				}
+				return j
+			},
+			size : function (s, r) {
+				if (!isNaN(s) && !isNaN(r)) {
+					h.attr({
+						width : s,
+						height : r
+					})
+				}
+				return {
+					width : h.attr("width"),
+					height : h.attr("height")
+				}
+			},
+			clear : function (r, u, s, t) {
+				if (arguments.length < 4) {
+					r = 0;
+					u = 0;
+					s = h.attr("width");
+					t = h.attr("height")
+				}
+				q.clearRect(r, u, s, t);
+				if (p.background !== null) {
+					q.save();
+					q.fillStyle = Colors.encode(p.background);
+					q.fillRect(r, u, s, t);
+					q.restore()
+				}
+			},
+			background : function (s, r, v, t) {
+				if (s == null) {
+					p.background = null;
+					return null
+				}
+				var u = Colors.decode(s, r, v, t);
+				if (u) {
+					p.background = u;
+					j.clear()
+				}
+			},
+			noFill : function () {
+				p.fill = null
+			},
+			fill : function (s, r, v, t) {
+				if (arguments.length == 0) {
+					return p.fill
+				} else {
+					if (arguments.length > 0) {
+						var u = Colors.decode(s, r, v, t);
+						p.fill = u;
+						q.fillStyle = Colors.encode(u)
+					}
+				}
+			},
+			noStroke : function () {
+				p.stroke = null;
+				q.strokeStyle = null
+			},
+			stroke : function (s, r, v, u) {
+				if (arguments.length == 0 && p.stroke !== null) {
+					return p.stroke
+				} else {
+					if (arguments.length > 0) {
+						var t = Colors.decode(s, r, v, u);
+						p.stroke = t;
+						q.strokeStyle = Colors.encode(t)
+					}
+				}
+			},
+			strokeWidth : function (r) {
+				if (r === undefined) {
+					return q.lineWidth
+				}
+				q.lineWidth = p.width = r
+			},
+			Color : function (r) {
+				return new d(r)
+			},
+			drawStyle : function (s) {
+				if (arguments.length == 0) {
+					return objcopy(p)
+				}
+				if (arguments.length == 2) {
+					var r = arguments[0];
+					var v = arguments[1];
+					if (typeof r == "string" && typeof v == "object") {
+						var u = {};
+						if (v.color !== undefined) {
+							var t = Colors.decode(v.color);
+							if (t) {
+								u.color = t
 							}
 						}
-						for (var n in j) {
-							if (m) {
-								l[n] = j[n][2]
-							} else {
-								var q = lerpRGB(o, j[n][0], j[n][1]);
-								l[n] = Colors.encode(q)
+						$.each("background fill stroke width".split(" "), function (w, x) {
+							if (v[x] !== undefined) {
+								u[x] = v[x]
 							}
+						});
+						if (!$.isEmptyObject(u)) {
+							m[r] = u
 						}
-						if (m) {
-							t.completed = true;
-							g = true
-						}
-					});
-					if (g) {
-						a[i] = $.map(h, function (j) {
-								if (!j.completed) {
-									return j
-								}
-							});
-						if (a[i].length == 0) {
-							delete a[i]
+					}
+					return
+				}
+				if (arguments.length == 1 && m[arguments[0]] !== undefined) {
+					s = m[arguments[0]]
+				}
+				if (s.width !== undefined) {
+					p.width = s.width
+				}
+				q.lineWidth = p.width;
+				$.each("background fill stroke", function (y, x) {
+					if (s[x] !== undefined) {
+						if (s[x] === null) {
+							p[x] = null
+						} else {
+							var w = Colors.decode(s[x]);
+							if (w) {
+								p[x] = w
+							}
 						}
 					}
 				});
-				c = $.isEmptyObject(a);
-				return c
+				q.fillStyle = p.fill;
+				q.strokeStyle = p.stroke
+			},
+			textStyle : function (s) {
+				if (arguments.length == 0) {
+					return objcopy(g)
+				}
+				if (arguments.length == 2) {
+					var r = arguments[0];
+					var v = arguments[1];
+					if (typeof r == "string" && typeof v == "object") {
+						var u = {};
+						if (v.color !== undefined) {
+							var t = Colors.decode(v.color);
+							if (t) {
+								u.color = t
+							}
+						}
+						$.each("font size align baseline alpha".split(" "), function (w, x) {
+							if (v[x] !== undefined) {
+								u[x] = v[x]
+							}
+						});
+						if (!$.isEmptyObject(u)) {
+							b[r] = u
+						}
+					}
+					return
+				}
+				if (arguments.length == 1 && b[arguments[0]] !== undefined) {
+					s = b[arguments[0]]
+				}
+				if (s.font !== undefined) {
+					g.font = s.font
+				}
+				if (s.size !== undefined) {
+					g.size = s.size
+				}
+				q.font = nano("{size}px {font}", g);
+				if (s.align !== undefined) {
+					q.textAlign = g.align = s.align
+				}
+				if (s.baseline !== undefined) {
+					q.textBaseline = g.baseline = s.baseline
+				}
+				if (s.alpha !== undefined) {
+					g.alpha = s.alpha
+				}
+				if (s.color !== undefined) {
+					var t = Colors.decode(s.color);
+					if (t) {
+						g.color = t
+					}
+				}
+				if (g.color) {
+					var t = Colors.blend(g.color, g.alpha);
+					if (t) {
+						q.fillStyle = t
+					}
+				}
+			},
+			text : function (s, r, z, v) {
+				if (arguments.length >= 3 && !isNaN(r)) {
+					v = v || {};
+					v.x = r;
+					v.y = z
+				} else {
+					if (arguments.length == 2 && typeof(r) == "object") {
+						v = r
+					} else {
+						v = v || {}
+
+					}
+				}
+				var u = objmerge(g, v);
+				q.save();
+				if (u.align !== undefined) {
+					q.textAlign = u.align
+				}
+				if (u.baseline !== undefined) {
+					q.textBaseline = u.baseline
+				}
+				if (u.font !== undefined && !isNaN(u.size)) {
+					q.font = nano("{size}px {font}", u)
+				}
+				var w = (u.alpha !== undefined) ? u.alpha : g.alpha;
+				var t = (u.color !== undefined) ? u.color : g.color;
+				q.fillStyle = Colors.blend(t, w);
+				if (w > 0) {
+					q.fillText(s, Math.round(u.x), u.y)
+				}
+				q.restore()
+			},
+			textWidth : function (r, t) {
+				t = objmerge(g, t || {});
+				q.save();
+				q.font = nano("{size}px {font}", t);
+				var s = q.measureText(r).width;
+				q.restore();
+				return s
+			},
+			Rect : function (s, A, t, v, z, u) {
+				return new n(s, A, t, v, z, u)
+			},
+			rect : function (s, A, t, v, z, u) {
+				n.prototype._draw(s, A, t, v, z, u)
+			},
+			Oval : function (r, v, s, u, t) {
+				return new f(r, v, s, u, t)
+			},
+			oval : function (r, v, s, u, t) {
+				t = t || {};
+				f.prototype._draw(r, v, s, u, t)
+			},
+			line : function (s, v, r, t, u) {
+				var w = new a(s, v, r, t);
+				w.draw(u)
+			},
+			lines : function (s, u, r, t) {
+				if (typeof t == "number") {
+					k.push([{
+								x : s,
+								y : u
+							}, {
+								x : r,
+								y : t
+							}
+						])
+				} else {
+					k.push([s, u])
+				}
+			},
+			drawLines : function (r) {
+				var s = new a(k);
+				s.draw(r);
+				k = []
 			}
 		};
-		return b.init()
-	};
-	var lerpNumber = function (a, c, b) {
-		return c + a * (b - c)
-	};
-	var lerpRGB = function (b, d, c) {
-		b = Math.max(Math.min(b, 1), 0);
-		var a = {};
-		$.each("rgba".split(""), function (e, f) {
-			a[f] = Math.round(d[f] + b * (c[f] - d[f]))
-		});
-		return a
+		return j.init()
 	};
 
 	arbor = (typeof(arbor) !== 'undefined') ? arbor : {}
 	$.extend(arbor, {
-		// not really user-serviceable; use the ParticleSystem’s .tween* methods instead
-		Tween : Tween,
+		// object constructor (don't use ‘new’, just call it)
+		Graphics : function (ctx) {
+			return Graphics(ctx)
+		},
 
-		// immutable object with useful methods
+		// useful methods for dealing with the r/g/b
 		colors : {
-			CSS : Colors.CSS, // dictionary: {colorname:#fef2e2,...}
+			CSS : Colors.CSS, // dict:{colorname:"#fef2e2", ...}
 			validate : Colors.validate, // ƒ(str) -> t/f
 			decode : Colors.decode, // ƒ(hexString_or_cssColor) -> {r,g,b,a}
 			encode : Colors.encode, // ƒ({r,g,b,a}) -> hexOrRgbaString
 			blend : Colors.blend // ƒ(color, opacity) -> rgbaString
 		}
 	})
-
+	window.arbor = arbor
 })(this.jQuery)
