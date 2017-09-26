@@ -15,21 +15,76 @@
     <div class="answer-result">
       <!-- short answer -->
       <div>
-        <span class="result-title">
-          周董的妻子的丈夫的母亲是谁？
-        </span>
+        <div>
+          <span class="result-title">
+            周董的妻子的丈夫的母亲是谁？
+          </span>
+        </div>
+        <div class="result-card">
+          <div>
+            <span class="short-answer-text">sdfsdfsdf</span>
+            <result-tag class="short-answer-tag"></result-tag>
+          </div>
+        </div>
+        <div class="result-card-explain">
+          如果周董指的是
+          <span class="explain-stress">
+            周杰伦的别名
+          </span>
+        </div>
+      </div>
+      <!-- knowledge graph -->
+      <div>
+        <div>
+          <span class="result-title">
+            逻辑图谱
+          </span>
+        </div>
       </div>
       <div class="result-card">
         <div>
-          <span class="short-answer-text">sdfsdfsdf</span>
-          <result-tag class="short-answer-tag"></result-tag>
+          <knowledge-graph></knowledge-graph>
         </div>
       </div>
-      <div class="result-card-explain">
-        如果周董指的是
-        <span class="explain-stress">
-        周杰伦的别名  
-        </span>
+
+      <!-- ner answer -->
+      <div>
+        <div>
+          <span class="result-title">
+            命名实体识别
+          </span>
+        </div>
+        <div class="result-card">
+          <div class="ner-result">
+            <result-table></result-table>
+            <answer-btn class="answer-btn" @answerBtnClickListener="openRightWindow"></answer-btn>
+          </div>
+        </div>
+      </div>
+
+      <!-- page answer -->
+      <div>
+        <div>
+          <span class="result-title">
+            网页搜索结果
+          </span>
+        </div>
+        <div class="result-card">
+          <div>
+            <page-result-item></page-result-item>
+          </div>
+        </div>
+      </div>
+
+      <!-- right window -->
+      <div>
+        <div>
+          <span class="result-title">
+            右侧弹窗测试
+          </span>
+        </div>
+        <right-window ref="rightWindow"></right-window>
+
       </div>
 
     </div>
@@ -42,13 +97,23 @@ import { Message } from 'element-ui'
 import { mapState, mapMutations } from 'vuex'
 import searchBar from '@/components/common/searchBar/SearchBar'
 import resultTag from '@/components/common/tag/resultTag'
+import knowledgeGraph from '@/components/graph/KnowledgeGraph'
+import resultTable from '@/components/common/resultTable/ResultTable'
+import answerBtn from '@/components/common/button/AnswerBtn'
+import pageResultItem from '@/components/result/PageResultItem'
+import rightWindow from '@/components/rightWindow/RightWindow'
 
 import axios from 'axios'
 
 export default {
   components: {
     'search-bar': searchBar,
-    'result-tag': resultTag
+    'result-tag': resultTag,
+    'knowledge-graph': knowledgeGraph,
+    'result-table': resultTable,
+    'answer-btn': answerBtn,
+    'page-result-item': pageResultItem,
+    'right-window': rightWindow
   },
   data() {
     return {
@@ -92,6 +157,9 @@ export default {
         .catch(function(error) {
           console.log(error);
         });
+    },
+    openRightWindow: function () {
+      this.$refs.rightWindow.open('right')
     }
   }
 }
@@ -158,6 +226,15 @@ export default {
 .explain-stress {
   font-weight: bold;
 }
+
+.ner-result {
+  text-align: center;
+}
+
+.answer-btn {
+  margin-top: 2%;
+}
+
 
 .logo-img {
   width: 100%;

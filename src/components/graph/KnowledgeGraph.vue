@@ -1,16 +1,16 @@
 <template>
-  <canvas id="knowledge_graph" width="800" height="448" style="opacity: 1;" class="">
+  <canvas id="knowledge_graph" class="" width="800" height="448" style="opacity: 1;">
   </canvas>
 </template>
 
-<script scoped>
+<script>
 // import * as jquery from './juqery-2.2.3.min'
 // import * as juqery_adress from './jquery.address-1.4.min'
 // import * as arbor from './arbor'
 // import * as arbor_tween from './abor-tween'
 // import * as arbor_graphics from './arbor-graphics'
 // import * as semantic_graph from './arbor_graph'
-// import * as knowledge_graph from './knowledge_graph'
+// import * as knowledgeGraph from './knowledge_graph'
 // jquery
 // juqery_adress
 // arbor
@@ -20,12 +20,16 @@
 // knowledge_graph
 
 export default {
-
+  // mounted() {
+  //   this.$nextTick(() => {
+  //     knowledgeGraph.drawKnowledgeGraph()
+  //   })
+  // }
 }
 </script>
 
 
 
-<style scoped>
+<style>
 
 </style>

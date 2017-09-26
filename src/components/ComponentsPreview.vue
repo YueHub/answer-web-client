@@ -13,10 +13,6 @@
       <result-tag></result-tag>
     </div>
 
-    <br><br><br>
-    <div>
-      <knowledge-graph></knowledge-graph>
-    </div>
 
   </div>
 </template>
@@ -28,14 +24,12 @@ import resultTable from '@/components/common/resultTable/ResultTable'
 
 import resultTag from '@/components/common/tag/resultTag'
 
-import knowledgeGraph from '@/components/common/graph/KnowledgeGraph'
 
 export default {
   components: {
     'search-bar': searchBar,
     'result-table': resultTable,
-    'result-tag': resultTag,
-    'knowledge-graph': knowledgeGraph
+    'result-tag': resultTag
   }
 }
 </script>

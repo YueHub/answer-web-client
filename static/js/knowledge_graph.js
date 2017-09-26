@@ -367,6 +367,7 @@
           dataType : "json",
           timeout : 10000 ,
           success : function (returnVal) {
+            console.log('这里这里', returnVal)
         	  var CLR = {
         			  branch:"#b2b19d",
         		      code:"orange",
