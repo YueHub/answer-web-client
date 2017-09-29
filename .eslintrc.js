@@ -8,9 +8,10 @@ module.exports = {
   },
   env: {
     browser: true,
+    "node": true
   },
   // https://github.com/standard/standard/blob/master/docs/RULES-en.md
-  extends: 'eslint:recommended',
+  // extends: 'eslint:recommended',
   // required to lint *.vue files
   plugins: [
     'html'

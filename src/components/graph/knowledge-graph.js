@@ -1,6 +1,8 @@
-export const arbor = window.arbor
-
+export function getArbor() {
+  return window.arbor
+} 
 export function Renderer(elt) {
+  arbor = window.arbor
   var dom_knowledge_graph = $(elt)
   var canvas_knowledge_graph = dom_knowledge_graph.get(0)
   var ctx_knowledge_graph = canvas_knowledge_graph.getContext("2d");
@@ -255,6 +257,7 @@ export function Renderer(elt) {
 
 
 export function Nav (elt) {
+  arbor = window.arbor
   var dom_knowledge_graph = $(elt)
 
   var _path = null

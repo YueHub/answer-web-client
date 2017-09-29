@@ -12,43 +12,48 @@
     </div>
 
     <!-- answer result -->
-    <div class="answer-result">
+    <div class="answer-result" v-if="answerResult != null && answerResult != ''">
       <!-- short answer -->
-      <div>
+      <div v-for="shortAnswerPolysemant in answerResult.shortAnswer.polysemantSituationVOs" :key="shortAnswerPolysemant.id">
         <div>
           <span class="result-title">
-            周董的妻子的丈夫的母亲是谁？
+            {{ answerResult.question }}
           </span>
         </div>
         <div class="result-card">
-          <div>
-            <span class="short-answer-text">sdfsdfsdf</span>
-            <result-tag class="short-answer-tag"></result-tag>
+          <div v-for="(queryResult, index) in shortAnswerPolysemant.queryResults" :key="queryResult.id">
+            <span class="short-answer-text" v-if="queryResult.answers.length > 0">{{ queryResult.answers[0].content }}</span>
+            <result-tag class="short-answer-tag" v-if="queryResult.answers.length > 0">
+              {{ shortAnswerPolysemant.predicateDisambiguationStatements[index].subject.name }} {{ shortAnswerPolysemant.predicateDisambiguationStatements[index].predicate.name }}
+            </result-tag>
           </div>
         </div>
-        <div class="result-card-explain">
-          如果周董指的是
+        <div class="result-card-explain" v-for="activePolysemantNamedEntitie in shortAnswerPolysemant.activePolysemantNamedEntities" :key="activePolysemantNamedEntitie.id">
+          如果{{ activePolysemantNamedEntitie.entityName }}指的是
           <span class="explain-stress">
-            周杰伦的别名
+            {{ activePolysemantNamedEntitie.polysemantExplain }}
           </span>
         </div>
       </div>
+
       <!-- knowledge graph -->
-      <div>
+      <div id="knowledge-graph" v-if="answerResult != null && answerResult.knowledgeGraphVOs != null">
         <div>
-          <span class="result-title">
-            逻辑图谱
-          </span>
+          <div>
+            <span class="result-title">
+              逻辑图谱
+            </span>
+          </div>
         </div>
-      </div>
-      <div class="result-card">
-        <div>
-          <knowledge-graph></knowledge-graph>
+        <div class="result-card">
+          <div>
+            <knowledge-graph ref="knowledgeGraph" :knowledgeGraphVOs="answerResult.knowledgeGraphVOs"></knowledge-graph>
+          </div>
         </div>
       </div>
 
       <!-- ner answer -->
-      <div>
+      <div v-if="answerResult != null && answerResult.words != null">
         <div>
           <span class="result-title">
             命名实体识别
@@ -56,7 +61,7 @@
         </div>
         <div class="result-card">
           <div class="ner-result">
-            <result-table></result-table>
+            <result-table :tableData="answerResult.words"></result-table>
             <answer-btn class="answer-btn" @answerBtnClickListener="openRightWindow"></answer-btn>
           </div>
         </div>
@@ -78,13 +83,7 @@
 
       <!-- right window -->
       <div>
-        <div>
-          <span class="result-title">
-            右侧弹窗测试
-          </span>
-        </div>
         <right-window ref="rightWindow"></right-window>
-
       </div>
 
     </div>
@@ -93,6 +92,7 @@
 </template>
 
 <script scoped>
+import Vue from 'vue'
 import { Message } from 'element-ui'
 import { mapState, mapMutations } from 'vuex'
 import searchBar from '@/components/common/searchBar/SearchBar'
@@ -117,12 +117,14 @@ export default {
   },
   data() {
     return {
-      searchBarTextValue: ''
+      searchBarTextValue: '',
+      answerResult: null,
+      count: 1
     }
   },
   mounted() {
     if (this.searchQuery != null && this.searchQuery != '') {
-      this.startSearch()
+      this.startAnswer(this.successHandler, this.errorHandler)
     }
   },
   computed: {
@@ -138,9 +140,9 @@ export default {
       })
     },
     searchBarBtnClick: function() {
-      this.startSearch()
+      this.startAnswer(this.successHandler, this.errorHandler)
     },
-    startSearch: function() {
+    startAnswer: function(successHandler, errorHandler) {
       if (this.searchQuery == '') {
         Message({
           showClose: true,
@@ -150,15 +152,21 @@ export default {
         });
         return
       }
-      axios.get('/Answer/front/developerAction!answer.action?question=' + this.searchQuery)
+      axios.get('/answer?q=' + this.searchQuery)
         .then(function(response) {
-          console.log(response)
+          successHandler(response)
         })
         .catch(function(error) {
-          console.log(error);
+          errorHandler(error)
         });
     },
-    openRightWindow: function () {
+    successHandler: function(response) {
+      this.answerResult = response.data
+    },
+    errorHandler: function(error) {
+      console.log("error: ", error)
+    },
+    openRightWindow: function() {
       this.$refs.rightWindow.open('right')
     }
   }

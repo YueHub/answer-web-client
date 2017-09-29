@@ -6,52 +6,33 @@
         <th width='70%'>歧义理解</th>
         <th width='30%'>所属类</th>
       </tr>
-
-      <tr class="trh">
-        <td class="tn">
-          <a href="${pageContext.request.contextPath}/front/developerAction!answer.action?question=<s:property value='#word.name'/>" class="lk" target="_blank">
-            <span style='font-family:"SimHei";font-weight:bold;'>
-              美人鱼
+      <template v-for="word in tableData">
+        <tr class="trh" v-for="lineData in word.polysemantNamedEntities" :key="lineData.id">
+          <td class="tn">
+            <a href="${pageContext.request.contextPath}/front/developerAction!answer.action?question=<s:property value='#word.name'/>" class="lk" target="_blank">
+              <span style='font-family:"SimHei";font-weight:bold;'>
+                {{ lineData.entityName }}
+              </span>
+            </a>
+          </td>
+          <td>
+            <span style='font-family:"SimHei";'>
+              {{ lineData.polysemantExplain }}
             </span>
-          </a>
-        </td>
-        <td>
-          <span style='font-family:"SimHei";'>
-            2016年周星驰执导3D喜剧电影
-          </span>
-        </td>
-        <td>
-          <span style='font-family:"SimHei";'>
-            电影
-          </span>
-        </td>
-      </tr>
-
-      <tr>
-        <td class="tn">
-          <a href="${pageContext.request.contextPath}/front/developerAction!answer.action?question=<s:property value='#word.name'/>" class="lk" target="_blank">
-            <span style='font-family:"SimHei";font-weight:bold;'>
-              美人鱼
+          </td>
+          <td>
+            <span style='font-family:"SimHei";'>
+              {{ lineData.ontClass }}
             </span>
-          </a>
-        </td>
-        <td>
-          <span style='font-family:"SimHei";'>
-            周杰伦创作歌曲
-          </span>
-        </td>
-        <td>
-          <span style='font-family:"SimHei";'>
-            音乐
-          </span>
-        </td>
-      </tr>
+          </td>
+        </tr>
+      </template>
     </tbody>
   </table>
 </template>
 <script>
 export default {
-
+  props: ['tableData']
 }
 </script>
 
