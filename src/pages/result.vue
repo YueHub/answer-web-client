@@ -13,6 +13,14 @@
 
     <!-- answer result -->
     <div class="answer-result" v-if="answerResult != null && answerResult != ''">
+      <div class="explain-text" v-for="(word, index) in answerResult.words" :key="word.id" v-if="word.polysemantNamedEntities.length > 0">
+        <span class="explain-stress"> {{ word.name }}</span>
+        至少含有
+        <span class="explain-stress">{{ word.polysemantNamedEntities.length }}</span>
+        种歧义理解 Answer会根据问题自动识别
+      </div>
+      
+
       <!-- short answer -->
       <div v-for="shortAnswerPolysemant in answerResult.shortAnswer.polysemantSituationVOs" :key="shortAnswerPolysemant.id">
         <div>
@@ -21,15 +29,20 @@
           </span>
         </div>
         <div class="result-card">
-          <div v-for="(queryResult, index) in shortAnswerPolysemant.queryResults" :key="queryResult.id">
-            <span class="short-answer-text" v-if="queryResult.answers.length > 0">{{ queryResult.answers[0].content }}</span>
-            <result-tag class="short-answer-tag" v-if="queryResult.answers.length > 0">
-              {{ shortAnswerPolysemant.predicateDisambiguationStatements[index].subject.name }} {{ shortAnswerPolysemant.predicateDisambiguationStatements[index].predicate.name }}
+          <div class="answer-item" v-for="(queryResult, index) in shortAnswerPolysemant.queryResults" :key="queryResult.id">
+            <span class="short-answer-text" v-if="queryResult.answers.length > 0 && answer != null" v-for="answer in queryResult.answers">
+              {{ answer.content  + "  "}}
+            </span>
+            <result-tag class="short-answer-tag" v-if="queryResult.answers.length > 0" :param1="shortAnswerPolysemant.predicateDisambiguationStatements[index].subject.name" :param2="shortAnswerPolysemant.predicateDisambiguationStatements[index].predicate.disambiguationName">
             </result-tag>
           </div>
         </div>
-        <div class="result-card-explain" v-for="activePolysemantNamedEntitie in shortAnswerPolysemant.activePolysemantNamedEntities" :key="activePolysemantNamedEntitie.id">
-          如果{{ activePolysemantNamedEntitie.entityName }}指的是
+        <div class="result-card-explain" v-for="activePolysemantNamedEntitie in shortAnswerPolysemant.activePolysemantNamedEntities" v-if="activePolysemantNamedEntitie != null" :key="activePolysemantNamedEntitie.id">
+          如果
+          <span class="explain-stress">
+            {{ activePolysemantNamedEntitie.entityName }}
+          </span>
+          指的是
           <span class="explain-stress">
             {{ activePolysemantNamedEntitie.polysemantExplain }}
           </span>
@@ -53,16 +66,16 @@
       </div>
 
       <!-- ner answer -->
-      <div v-if="answerResult != null && answerResult.words != null">
+      <div class="ner-result" v-if="answerResult != null && answerResult.words != null">
         <div>
           <span class="result-title">
             命名实体识别
           </span>
         </div>
         <div class="result-card">
-          <div class="ner-result">
+          <div class="ner-result-table">
             <result-table :tableData="answerResult.words"></result-table>
-            <answer-btn class="answer-btn" @answerBtnClickListener="openRightWindow"></answer-btn>
+            <answer-btn class="new-answer-btn" @answerBtnClickListener="openRightWindow"></answer-btn>
           </div>
         </div>
       </div>
@@ -162,6 +175,7 @@ export default {
     },
     successHandler: function(response) {
       this.answerResult = response.data
+      console.log(this.answerResult)
     },
     errorHandler: function(error) {
       console.log("error: ", error)
@@ -198,8 +212,18 @@ export default {
   width: 50%;
 }
 
+.explain-text {
+  width: 100%;
+  text-align: center;
+  font-size: 0.9em;
+  color: #757373;
+}
+
+
 .result-title {
+  font-style: oblique;
   font-size: 1.3em;
+
 }
 
 .result-card {
@@ -213,6 +237,15 @@ export default {
   -moz-box-shadow: 0 1px 3px rgba(0, 0, 0, .3);
   -webkit-box-shadow: 0 1px 3px rgba(0, 0, 0, .3);
   box-shadow: 0 1px 3px rgb(51, 133, 255);
+}
+
+#knowledge-graph .result-card {
+  padding: 1% !important;
+}
+
+.answer-item {
+  padding-left: 1em;
+  padding-top: 1em;
 }
 
 .short-answer-text {
@@ -236,11 +269,20 @@ export default {
 }
 
 .ner-result {
+  margin-top: 30px;
+}
+
+.ner-result-table {
   text-align: center;
 }
 
-.answer-btn {
+.new-answer-btn {
   margin-top: 2%;
+  color: #dfdfdf;
+}
+
+.new-answer-btn:hover {
+  color: #FFF;
 }
 
 
@@ -257,7 +299,8 @@ export default {
   }
   .result-search-bar {
     width: 50%;
-    margin: auto;
+    margin-right: auto;
+    margin-left: auto;
   }
 }
 </style>

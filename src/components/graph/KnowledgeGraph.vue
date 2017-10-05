@@ -1,12 +1,9 @@
 <template>
-  <canvas id="knowledge_graph" width="720" height="448" style="opacity: 1;">
+  <canvas id="knowledge_graph" width="820" height="448" style="opacity: 1;">
   </canvas>
 </template>
 
 <script>
-// import * as arborInit from './arbor'
-// import * as arborGraphicsInit from './arbor-graphics'
-// import * as knowledgeGraph from './knowledge-graph'
 var knowledgeGraph = require('./knowledge-graph')
 export default {
   props: ['knowledgeGraphVOs'],
