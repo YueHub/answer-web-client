@@ -1,7 +1,7 @@
 <template>
   <!-- 云图 -->
   <div class="div-cloud">
-    <canvas id="cloud" width="738px" height="350px">
+    <canvas id="cloud" :width="width" :height="height">
       <ul>
         <li :key="cloudWord.id" v-for="cloudWord in cloudWords">
           <a href="javascript: void(0)" @click="tagCloudJump(cloudWord)"> {{ cloudWord }}</a>
@@ -17,7 +17,7 @@ import * as DrawTagCloud from './tagcanvas.min.js'
 import { mapMutations } from 'vuex'
 
 export default {
-  props: ['cloudWords'],
+  props: ['cloudWords', 'width', 'height'],
   mounted() {
     this.$nextTick(() => {
       DrawTagCloud.drawTagCloud()

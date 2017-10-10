@@ -7,17 +7,16 @@
         <img class="logo-img" src="/static/imgs/logo/answer-logo.png" alt="logo" />
       </router-link>
     </div>
+
     <!-- search bar -->
     <div class="index-search-bar">
       <search-bar @searchBarTextChangeListener="searchBarTextChange" @searchBarBtnClickListener="searchBarBtnClick">
-
       </search-bar>
     </div>
 
     <!-- tag cloud -->
     <div class="index-tag-cloud">
-      <tag-cloud :cloudWords="cloudWords">
-
+      <tag-cloud :cloudWords="cloudWords" :width="tagCloudWidth" :height="tagCloudHeight">
       </tag-cloud>
     </div>
   </div>
@@ -38,13 +37,15 @@ export default {
   },
   data() {
     return {
-      searchInputTextValue: ''
+      searchInputTextValue: '',
+      tagCloudWidth: '738px',
+      tagCloudHeight: '350px'
     }
   },
   mounted () {
     this.$nextTick(() => {
       if (this.platform == 0) {
-        document.getElementById('logo-img').src = '/static/imgs/logo/logo-mobile.png'
+        
       }
     })
   },
@@ -77,13 +78,14 @@ export default {
 </script>
 
 <style>
+.logo-main {
+  cursor: pointer;
+}
 .logo-img {
   width: 100%;
   height: 100%;
 }
-.logo-main {
-  cursor: pointer;
-}
+
 
 @media screen and (min-width:1120px) {
   .logo-main {
@@ -119,10 +121,10 @@ export default {
 
 @media screen and (max-width: 770px) {
   .logo-main {
-    width: 50%;
+    width: 55%;
     line-height: 35%;
     overflow: hidden;
-    margin: 20% auto 10%;
+    margin: 15% auto 15%;
   }
   .index-search-bar {
     width: 95%;
