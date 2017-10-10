@@ -41,5 +41,6 @@ export default {
   font-family: 'SimHei', 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  min-height: 100px;
 }
 </style>

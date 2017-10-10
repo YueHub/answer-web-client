@@ -30,7 +30,7 @@
         </div>
         <div class="result-card">
           <div class="answer-item" v-for="(queryResult, index) in shortAnswerPolysemant.queryResults" :key="queryResult.id">
-            <span class="short-answer-text" v-if="queryResult.answers.length > 0 && answer != null" v-for="answer in queryResult.answers">
+            <span class="short-answer-text" v-if="queryResult.answers.length > 0 && answer != null" v-for="answer in queryResult.answers" :key="answer.id">
               {{ answer.content  + "  "}}
             </span>
             <result-tag class="short-answer-tag" v-if="queryResult.answers.length > 0" :param1="shortAnswerPolysemant.predicateDisambiguationStatements[index].subject.name" :param2="shortAnswerPolysemant.predicateDisambiguationStatements[index].predicate.disambiguationName">
@@ -75,7 +75,7 @@
         <div class="result-card">
           <div class="ner-result-table">
             <result-table :tableData="answerResult.words"></result-table>
-            <answer-btn class="new-answer-btn" @answerBtnClickListener="openRightWindow"></answer-btn>
+            <answer-btn class="new-answer-btn" @answerBtnClickListener="toggleRightWindow"></answer-btn>
           </div>
         </div>
       </div>
@@ -94,9 +94,9 @@
         </div>
       </div>
 
-      <!-- right window -->
+      <!-- right window - knowledge net -->
       <div>
-        <right-window ref="rightWindow"></right-window>
+        <right-window :words="answerResult.words" ref="rightWindow"></right-window>
       </div>
 
     </div>
@@ -180,8 +180,8 @@ export default {
     errorHandler: function(error) {
       console.log("error: ", error)
     },
-    openRightWindow: function() {
-      this.$refs.rightWindow.open('right')
+    toggleRightWindow: function() {
+      this.$refs.rightWindow.toggle('right')
     }
   }
 }

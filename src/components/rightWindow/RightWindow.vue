@@ -1,239 +1,120 @@
 <template>
-  <!-- 右侧知识网络 -->
   <mu-popup popupClass="popup-right" position="right" :open="rightPopup" @close="close('right')" :overlay="false">
     <div class="left-window-contain">
       <div class="knowledge-infos">
-        <div>
-          <!-- <s:iterator value='#session.polysemantNamedEntities' id='polysemantNamedEntity'> -->
-          <span class="knowledge-info-title">Answer知识网络</span><br/><br/>
-          <!-- 实体名称 -->
-          <svg class="icon yellow-square" aria-hidden="true">
-            <use xlink:href="#icon-square"></use>
-          </svg>
-          <span class="entity-text">
-            <!-- <s:property value='#polysemantNamedEntity.entityName' /> -->
-            美人鱼
-          </span>
-          <!-- 所属类 -->
-          <span class='belong-text'>属于</span>
-          <span class='lk entity-category'>
-            <!-- <s:property value='#polysemantNamedEntity.ontClass' /> -->
-            电影
-          </span>
-
-          <div class="info-divider"></div>
-
-          <!-- 实体图片 -->
-          <div style='text-align:center;margin-top:5px;'>
-            <!-- <img src="answer_image/<s:property value='#polysemantNamedEntity.ontClass'/>/<s:property value='#polysemantNamedEntity.picSrc'/>" style=''></img> -->
-            <img class="entity-img" src="/static/imgs/logo/answer-logo.png"></img>
-          </div>
-
-          <div class="entity-intro">
-            <!-- 描述 -->
-            <span class="entity-intro-text">
-              <!-- <s:property value='#polysemantNamedEntity.lemmaSummary' /> -->
-              《美人鱼》是由周星驰执导，由江玉仪监制的喜剧爱情片，邓超、罗志祥、张雨绮、林允等领衔出演[1] 。 该片讲述了富豪刘轩和为了拯救同族前往刺杀他的美人鱼珊珊坠入爱河，谱写了一段人鱼爱情童话的故事。该片于2016年2月8日在中国上映[2-3] 。
-            </span>
-          </div>
-
-          <div class="entity-object">
-
-            <svg class="icon yellow-thumb" aria-hidden="true">
-              <use xlink:href="#icon-thumb"></use>
-            </svg>
-            <!-- 相关对象 -->
-            <span class="object-text">相关对象</span><br/>
-            <!-- <s:iterator value='#polysemantNamedEntity.objectProperties' id='objectProperty'> -->
-            <!-- <s:if test="#objectProperty.value != null"> -->
-            <div class="object-border object-contain">
-              <!-- <a class='mylk' target="_blank" style='font-family:"楷体";font-weight:bold;' href='${pageContext.request.contextPath}/front/developerAction!answer.action?question=<s:property value=' #objectProperty.value '/>'> -->
-              <a class='object-link' target="_blank" href='#'>
-                <!-- <s:property value='#objectProperty.value' /> -->
-                美人鱼
-              </a>
+        <div v-for="word in words" :key="word.id" v-if="word.polysemantNamedEntities.length != 0">
+          <div v-for="polysemantNamedEntity in word.polysemantNamedEntities" :key="polysemantNamedEntity.id">
+            
+            <div class="knowledge-info-title">
+              <span>Answer知识网络</span>
             </div>
-            <!-- </s:if> -->
-            <!-- </s:iterator> -->
-          </div>
+            <!-- right window close btn -->
+            <img src="/static/imgs/close.png" class="close-btn" @click="close('right')" />
 
-          <!-- 主要数据属性 -->
-          <div class="entity-property">
-            <svg class="icon yellow-thumb" aria-hidden="true">
-              <use xlink:href="#icon-thumb"></use>
-            </svg>
-            <span class="main-property-text">主要属性</span><br/>
-            <!-- <s:iterator value='#polysemantNamedEntity.dataProperties' id='dataProperty'> -->
-            <!-- <s:if test="#dataProperty.value != null"> -->
-            <div class="property-border">
-              <span class="property-text">
-                <!-- <s:property value='#dataProperty.key' /> -->
-                拍摄日期
-              </span>
-            </div>
-            <!-- </s:if> -->
-            <!-- </s:iterator> -->
-          </div>
-          <br/><br/>
-          <div class="entity-polysemant">
-            <svg class="icon yellow-thumb" aria-hidden="true">
-              <use xlink:href="#icon-thumb"></use>
-            </svg>
-            <!-- 歧义理解 -->
-            <span class="entity-polysemant-text">歧义理解</span><br/>
-            <!-- <s:iterator value='#session.answerResultVO.words' id='word'> -->
-            <!-- <s:if test='#word.name == #polysemantNamedEntity.entityName'> -->
-            <center>
-              <span style='font-family:"SimHei";color:yellow;'>
-                <!-- <s:property value='#polysemantNamedEntity.entityName' /> -->
-                美人鱼
-              </span>
-              <span style='font-family:"SimHei";'>
-                至少含有
-                <span style='font-family:"SimHei";color:yellow;'>
-                  <!-- <s:property value='#word.polysemantNamedEntities.size' /> -->
-                  3
-                </span>种歧义理解
-              </span>
-            </center>
-            <!-- <s:iterator value='#word.polysemantNamedEntities' id='polysemantNamedEntity'> -->
-            <div style='margin-left:20px;'>
-              <svg class="icon yellow-thumb" aria-hidden="true" style='color:#ffd800;font-size:12px;margin-left:-2%;'>
-                <use xlink:href="#icon-circle"></use>
+            <!-- 实体名称 -->
+            <div class="info-item-title">
+              <svg class="icon yellow-square" aria-hidden="true">
+                <use xlink:href="#icon-square"></use>
               </svg>
-              <span style='font-size:10px;color:rgba(255, 255, 255, 0.65);'>
-                2016年周星驰执导3D喜剧电影
-                <!-- <s:property value='#polysemantNamedEntity.polysemantExplain' /> -->
+              <span class="entity-text">
+                {{ polysemantNamedEntity.entityName }}
+              </span>
+              <!-- 所属类 -->
+              <span class='belong-text'>属于</span>
+              <span class='entity-category-text'>
+                {{ polysemantNamedEntity.ontClass }}
               </span>
             </div>
-            <!-- </s:iterator> -->
-            <!-- </s:if> -->
-            <!-- </s:iterator> -->
-          </div>
 
-          <!-- </s:iterator>   -->
-        </div>
-        <div>
-          <!-- <s:iterator value='#session.polysemantNamedEntities' id='polysemantNamedEntity'> -->
-          <span class="knowledge-info-title">Answer知识网络</span><br/><br/>
-          <!-- 实体名称 -->
-          <svg class="icon yellow-square" aria-hidden="true">
-            <use xlink:href="#icon-square"></use>
-          </svg>
-          <span class="entity-text">
-            <!-- <s:property value='#polysemantNamedEntity.entityName' /> -->
-            美人鱼
-          </span>
-          <!-- 所属类 -->
-          <span class='belong-text'>属于</span>
-          <span class='lk entity-category'>
-            <!-- <s:property value='#polysemantNamedEntity.ontClass' /> -->
-            电影
-          </span>
+            <div class="info-divider"></div>
 
-          <div class="info-divider"></div>
-
-          <!-- 实体图片 -->
-          <div style='text-align:center;margin-top:5px;'>
-            <!-- <img src="answer_image/<s:property value='#polysemantNamedEntity.ontClass'/>/<s:property value='#polysemantNamedEntity.picSrc'/>" style=''></img> -->
-            <img class="entity-img" src="/static/imgs/logo/answer-logo.png"></img>
-          </div>
-
-          <div class="entity-intro">
-            <!-- 描述 -->
-            <span class="entity-intro-text">
-              <!-- <s:property value='#polysemantNamedEntity.lemmaSummary' /> -->
-              《美人鱼》是由周星驰执导，由江玉仪监制的喜剧爱情片，邓超、罗志祥、张雨绮、林允等领衔出演[1] 。 该片讲述了富豪刘轩和为了拯救同族前往刺杀他的美人鱼珊珊坠入爱河，谱写了一段人鱼爱情童话的故事。该片于2016年2月8日在中国上映[2-3] 。
-            </span>
-          </div>
-
-          <div class="entity-object">
-
-            <svg class="icon yellow-thumb" aria-hidden="true">
-              <use xlink:href="#icon-thumb"></use>
-            </svg>
-            <!-- 相关对象 -->
-            <span class="object-text">相关对象</span><br/>
-            <!-- <s:iterator value='#polysemantNamedEntity.objectProperties' id='objectProperty'> -->
-            <!-- <s:if test="#objectProperty.value != null"> -->
-            <div class="object-border object-contain">
-              <!-- <a class='mylk' target="_blank" style='font-family:"楷体";font-weight:bold;' href='${pageContext.request.contextPath}/front/developerAction!answer.action?question=<s:property value=' #objectProperty.value '/>'> -->
-              <a class='object-link' target="_blank" href='#'>
-                <!-- <s:property value='#objectProperty.value' /> -->
-                美人鱼
-              </a>
+            <!-- 实体图片 -->
+            <div class="entity-img">
+              <!-- <img src="answer_image/<s:property value='#polysemantNamedEntity.ontClass'/>/<s:property value='#polysemantNamedEntity.picSrc'/>" style=''></img> -->
+              <img src="/static/imgs/1465139022110978.jpg"></img>
             </div>
-            <!-- </s:if> -->
-            <!-- </s:iterator> -->
-          </div>
 
-          <!-- 主要数据属性 -->
-          <div class="entity-property">
-            <svg class="icon yellow-thumb" aria-hidden="true">
-              <use xlink:href="#icon-thumb"></use>
-            </svg>
-            <span class="main-property-text">主要属性</span><br/>
-            <!-- <s:iterator value='#polysemantNamedEntity.dataProperties' id='dataProperty'> -->
-            <!-- <s:if test="#dataProperty.value != null"> -->
-            <div class="property-border">
-              <span class="property-text">
-                <!-- <s:property value='#dataProperty.key' /> -->
-                拍摄日期
-              </span>
+            <div class="entity-intro">
+              <!-- 描述 -->
+              <p class="entity-intro-text">
+                {{ polysemantNamedEntity.lemmaSummary }}
+              </p>
             </div>
-            <!-- </s:if> -->
-            <!-- </s:iterator> -->
-          </div>
-          <br/><br/>
-          <div class="entity-polysemant">
-            <svg class="icon yellow-thumb" aria-hidden="true">
-              <use xlink:href="#icon-thumb"></use>
-            </svg>
-            <!-- 歧义理解 -->
-            <span class="entity-polysemant-text">歧义理解</span><br/>
-            <!-- <s:iterator value='#session.answerResultVO.words' id='word'> -->
-            <!-- <s:if test='#word.name == #polysemantNamedEntity.entityName'> -->
-            <center>
-              <span style='font-family:"SimHei";color:yellow;'>
-                <!-- <s:property value='#polysemantNamedEntity.entityName' /> -->
-                美人鱼
-              </span>
-              <span style='font-family:"SimHei";'>
-                至少含有
-                <span style='font-family:"SimHei";color:yellow;'>
-                  <!-- <s:property value='#word.polysemantNamedEntities.size' /> -->
-                  3
-                </span>种歧义理解
-              </span>
-            </center>
-            <!-- <s:iterator value='#word.polysemantNamedEntities' id='polysemantNamedEntity'> -->
-            <div style='margin-left:20px;'>
-              <svg class="icon yellow-thumb" aria-hidden="true" style='color:#ffd800;font-size:12px;margin-left:-2%;'>
-                <use xlink:href="#icon-circle"></use>
+
+            <div class="entity-object">
+              <svg class="icon yellow-thumb" aria-hidden="true">
+                <use xlink:href="#icon-thumb"></use>
               </svg>
-              <span style='font-size:10px;color:rgba(255, 255, 255, 0.65);'>
-                2016年周星驰执导3D喜剧电影
-                <!-- <s:property value='#polysemantNamedEntity.polysemantExplain' /> -->
-              </span>
-            </div>
-            <!-- </s:iterator> -->
-            <!-- </s:if> -->
-            <!-- </s:iterator> -->
-          </div>
+              <!-- 相关对象 -->
+              <span class="object-text">相关对象</span><br/>
+              <!-- <s:iterator value='#polysemantNamedEntity.objectProperties' id='objectProperty'> -->
+              <!-- <s:if test="#objectProperty.value != null"> -->
+              <div class="object-border object-contain" v-for="objectProperty in polysemantNamedEntity.objectProperties" :key="objectProperty.id" v-if="objectProperty != null">
+                <!-- <a class='mylk' target="_blank" style='font-family:"楷体";font-weight:bold;' href='${pageContext.request.contextPath}/front/developerAction!answer.action?question=<s:property value=' #objectProperty.value '/>'> -->
 
-          <!-- </s:iterator>   -->
+                <a class='object-link' target="_blank" href='#'>
+                  <!-- <s:property value='#objectProperty.value' /> -->
+                  {{ objectProperty }}
+                </a>
+              </div>
+            </div>
+
+            <!-- 主要数据属性 -->
+            <div class="entity-property">
+              <svg class="icon yellow-thumb" aria-hidden="true">
+                <use xlink:href="#icon-thumb"></use>
+              </svg>
+              <span class="main-property-text">主要属性</span><br/>
+              <!-- <s:iterator value='#polysemantNamedEntity.dataProperties' id='dataProperty'> -->
+              <!-- <s:if test="#dataProperty.value != null"> -->
+              <div class="property-border" v-for="(dataProperty, key) in polysemantNamedEntity.dataProperties" :key="dataProperty.id" v-if="dataProperty != null">
+                <span class="property-text">
+                  {{ key }}
+                </span>
+              </div>
+            </div>
+            <br/><br/>
+            <div class="entity-polysemant">
+              <svg class="icon yellow-thumb" aria-hidden="true">
+                <use xlink:href="#icon-thumb"></use>
+              </svg>
+              <!-- 歧义理解 -->
+              <span class="entity-polysemant-text">歧义理解</span><br/>
+              <!-- <s:iterator value='#session.answerResultVO.words' id='word'> -->
+              <!-- <s:if test='#word.name == #polysemantNamedEntity.entityName'> -->
+              <center>
+                <span style='font-family:"SimHei";color:yellow;'>
+                  {{ polysemantNamedEntity.entityName }}
+                </span>
+                <span style='font-family:"SimHei";'>
+                  至少含有
+                  <span style='font-family:"SimHei";color:yellow;'>
+                    <!-- <s:property value='#word.polysemantNamedEntities.size' /> -->
+                    {{ word.polysemantNamedEntities.length }}
+                  </span>
+                  种歧义理解
+                </span>
+              </center>
+              <div style='margin-left:20px;' v-for="polysemantNamedEntity in word.polysemantNamedEntities" :key="polysemantNamedEntity.id">
+                <svg class="icon yellow-thumb" aria-hidden="true" style='color:#ffd800;font-size:12px;margin-left:-2%;'>
+                  <use xlink:href="#icon-circle"></use>
+                </svg>
+                <span style='font-size:10px;color:rgba(255, 255, 255, 0.65);'>
+                  {{ polysemantNamedEntity.polysemantExplain }}
+                </span>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
   </mu-popup>
-  <!-- 右侧知识网络 -->
 </template>
 
 
-<script>
-
-
+<script scoped>
 export default {
+  props: ['words'],
   data() {
     return {
       rightPopup: false
@@ -245,6 +126,9 @@ export default {
     },
     close(position) {
       this[position + 'Popup'] = false
+    },
+    toggle(position) {
+      this[position + 'Popup'] = !this[position + 'Popup']
     }
   },
   watch: {
@@ -282,28 +166,52 @@ export default {
   padding: 1em;
 }
 
-.knowledge-info-title {
+.knowledge-info-title span {
   margin-top: -20px;
+  font-size: 1.2em;
   font-style: oblique;
 }
 
+.info-item-title {
+  margin-top: 2%;
+}
+
+.entity-text {
+  margin-left: 4%;
+}
+
+.close-btn {
+  display: block;
+  position: absolute;
+  top: 5px;
+  right: 15px;
+  width: 2em;
+  height: 2em;
+  cursor: pointer;
+  transition: 0.3s ease;
+}
+
 .yellow-square {
-  font-size: 27px;
+  font-size: 1.8em;
   color: #ffd800;
 }
 
 .entity-text {
   font-family: "楷体";
-  font-size: 22px;
+  font-size: 1.6em;
   font-weight: bold;
 }
 
 .belong-text {
   font-family: "SimHei";
+  font-size: 1.1em;
 }
 
-.entity-category {
+.entity-category-text {
+  margin-left: 2%;
+  border-bottom: 2px solid #ffd800;
   font-family: "SimHei";
+  font-size: 1.3em;
   color: yellow !important;
 }
 
@@ -316,17 +224,24 @@ export default {
 }
 
 .entity-img {
+  text-align: center;
+  margin-top: 2%;
+}
+
+.entity-img img {
   width: 100px;
   height: 100px;
 }
 
 .entity-intro {
-  margin-top: 5px;
-  width: 330px;
+  margin-top: 2%;
+  width: 100%;
   height: auto;
 }
 
 .entity-intro-text {
+  text-align: left;
+  text-indent: 2em;
   font-family: "SimHei";
 }
 
@@ -403,15 +318,10 @@ export default {
   font-size: 20px;
 }
 
-
-
-
-.knowledge-infos span {
+.knowledge-infos span,
+.knowledge-infos p {
   color: #FFF;
 }
-
-
-
 
 
 
@@ -438,7 +348,6 @@ export default {
   -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
   box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
 }
-
 
 
 

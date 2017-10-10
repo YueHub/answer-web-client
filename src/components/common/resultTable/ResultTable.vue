@@ -9,7 +9,7 @@
       <template v-for="word in tableData">
         <tr class="trh" v-for="lineData in word.polysemantNamedEntities" :key="lineData.id">
           <td class="tn">
-            <a href="${pageContext.request.contextPath}/front/developerAction!answer.action?question=<s:property value='#word.name'/>" class="lk" target="_blank">
+            <a href="${pageContext.request.contextPath}/front/developerAction!answer.action?question=<s:property value='#word.name'/>" class="lk1" target="_blank">
               <span style='font-family:"SimHei";font-weight:bold;'>
                 {{ lineData.entityName }}
               </span>
@@ -36,7 +36,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 .bt {
   overflow: hidden;
   display: block;
@@ -80,7 +80,7 @@ th {
   background-color: #eee
 }
 
-.lk {
+.lk1 {
   color: #000000;
   border-bottom: 2px solid #ffd800;
 }
