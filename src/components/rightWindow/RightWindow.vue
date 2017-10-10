@@ -2,14 +2,45 @@
   <mu-popup popupClass="popup-right" position="right" :open="rightPopup" @close="close('right')" :overlay="false">
     <div class="left-window-contain">
       <div class="knowledge-infos">
+        <div class="knowledge-info-title">
+          <span>Answer知识网络</span>
+        </div>
+        <!-- right window close btn -->
+        <img src="/static/imgs/close.png" class="close-btn" @click="close('right')" />
+
         <div v-for="word in words" :key="word.id" v-if="word.polysemantNamedEntities.length != 0">
-          <div v-for="polysemantNamedEntity in word.polysemantNamedEntities" :key="polysemantNamedEntity.id">
-            
-            <div class="knowledge-info-title">
-              <span>Answer知识网络</span>
+
+          <div class="entity-polysemant">
+            <svg class="icon yellow-thumb" aria-hidden="true">
+              <use xlink:href="#icon-thumb"></use>
+            </svg>
+            <!-- 歧义理解 -->
+            <span class="entity-polysemant-text">歧义理解</span><br/>
+            <!-- <s:iterator value='#session.answerResultVO.words' id='word'> -->
+            <!-- <s:if test='#word.name == #polysemantNamedEntity.entityName'> -->
+            <div class="ambiguous-understanding-title">
+              <span class='yellow-text'>
+                {{ word.name }}
+              </span>
+              <span>
+                至少含有
+                <span class='yellow-text'>
+                  {{ word.polysemantNamedEntities.length }}
+                </span>
+                种歧义理解
+              </span>
             </div>
-            <!-- right window close btn -->
-            <img src="/static/imgs/close.png" class="close-btn" @click="close('right')" />
+            <div class="ambiguous-understanding-content" v-for="(polysemantNamedEntity, index) in word.polysemantNamedEntities" :key="polysemantNamedEntity.id">
+              <svg class="icon yellow-thumb icon-circle" aria-hidden="true">
+                <use xlink:href="#icon-circle"></use>
+              </svg>
+              <span>
+                <a :href="'#anchor-' + index">{{ polysemantNamedEntity.polysemantExplain }}</a>
+              </span>
+            </div>
+          </div>
+
+          <div :id="'anchor-' + index" v-for="(polysemantNamedEntity, index) in word.polysemantNamedEntities" :key="polysemantNamedEntity.id">
 
             <!-- 实体名称 -->
             <div class="info-item-title">
@@ -17,13 +48,15 @@
                 <use xlink:href="#icon-square"></use>
               </svg>
               <span class="entity-text">
-                {{ polysemantNamedEntity.entityName }}
+                {{ polysemantNamedEntity.polysemantExplain }}
               </span>
               <!-- 所属类 -->
-              <span class='belong-text'>属于</span>
-              <span class='entity-category-text'>
-                {{ polysemantNamedEntity.ontClass }}
-              </span>
+              <div class="entity-class">
+                <span class='belong-text'>属于</span>
+                <span class='entity-category-text'>
+                  {{ polysemantNamedEntity.ontClass }}
+                </span>
+              </div>
             </div>
 
             <div class="info-divider"></div>
@@ -60,7 +93,7 @@
             </div>
 
             <!-- 主要数据属性 -->
-            <div class="entity-property">
+            <div class="entity-property clearfix">
               <svg class="icon yellow-thumb" aria-hidden="true">
                 <use xlink:href="#icon-thumb"></use>
               </svg>
@@ -70,36 +103,6 @@
               <div class="property-border" v-for="(dataProperty, key) in polysemantNamedEntity.dataProperties" :key="dataProperty.id" v-if="dataProperty != null">
                 <span class="property-text">
                   {{ key }}
-                </span>
-              </div>
-            </div>
-            <br/><br/><br/><br/>
-            <div class="entity-polysemant">
-              <svg class="icon yellow-thumb" aria-hidden="true">
-                <use xlink:href="#icon-thumb"></use>
-              </svg>
-              <!-- 歧义理解 -->
-              <span class="entity-polysemant-text">歧义理解</span><br/>
-              <!-- <s:iterator value='#session.answerResultVO.words' id='word'> -->
-              <!-- <s:if test='#word.name == #polysemantNamedEntity.entityName'> -->
-              <div class="ambiguous-understanding-title">
-                  <span class='yellow-text'>
-                    {{ polysemantNamedEntity.entityName }}
-                  </span>
-                  <span>
-                    至少含有
-                    <span class='yellow-text'>
-                      {{ word.polysemantNamedEntities.length }}
-                    </span>
-                    种歧义理解
-                  </span>
-              </div>
-              <div class="ambiguous-understanding-content" v-for="polysemantNamedEntity in word.polysemantNamedEntities" :key="polysemantNamedEntity.id">
-                <svg class="icon yellow-thumb icon-circle" aria-hidden="true">
-                  <use xlink:href="#icon-circle"></use>
-                </svg>
-                <span>
-                  {{ polysemantNamedEntity.polysemantExplain }}
                 </span>
               </div>
             </div>
@@ -179,6 +182,10 @@ export default {
   margin-left: 4%;
 }
 
+.entity-class {
+  float: right;
+}
+
 .close-btn {
   display: block;
   position: absolute;
@@ -197,7 +204,7 @@ export default {
 
 .entity-text {
   font-family: "楷体";
-  font-size: 1.6em;
+  font-size: 1.2em;
   font-weight: bold;
 }
 
@@ -207,7 +214,6 @@ export default {
 }
 
 .entity-category-text {
-  margin-left: 2%;
   border-bottom: 2px solid #ffd800;
   font-family: "SimHei";
   font-size: 1.3em;
@@ -252,7 +258,7 @@ export default {
 }
 
 .entity-object {
-  width: 320px;
+  width: 100%;
   height: auto;
   overflow: hidden;
 }
@@ -303,9 +309,21 @@ export default {
   text-align: center;
   margin-top: 5px;
   margin-right: 11px;
-  width: 80px;
   height: 20px;
   float: left;
+}
+
+.clearfix:after {
+  clear: both;
+  content: ".";
+  display: block;
+  margin: 0;
+  padding: 0;
+  font-size: 0;
+  height: 0px;
+  line-height: 0;
+  background: #000;
+  overflow: hidden;
 }
 
 .property-text {
@@ -329,24 +347,28 @@ export default {
   color: yellow !important;
 }
 
-.ambiguous-understanding-content { 
-  margin-left:20px;
+.ambiguous-understanding-content {
+  margin-left: 20px;
 }
 
-.ambiguous-understanding-content span {
-  font-size:10px;color:rgba(255, 255, 255, 0.65);
+.ambiguous-understanding-content span a {
+  font-size: 10px;
+  color: rgba(255, 255, 255, 0.65);
 }
 
 .icon-circle {
-  margin-left:-2%;
-  font-size:12px;
-  color:#ffd800;
+  margin-left: -2%;
+  font-size: 12px;
+  color: #ffd800;
 }
 
 .knowledge-infos span,
 .knowledge-infos p {
   color: #FFF;
 }
+
+
+
 
 
 
@@ -364,6 +386,9 @@ export default {
 
 
 
+
+
+
 /*定义滚动条轨道 内阴影+圆角*/
 
 .knowledge-infos::-webkit-scrollbar-track {
@@ -373,6 +398,9 @@ export default {
   -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
   box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
 }
+
+
+
 
 
 
