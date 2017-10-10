@@ -73,7 +73,7 @@
                 </span>
               </div>
             </div>
-            <br/><br/>
+            <br/><br/><br/><br/>
             <div class="entity-polysemant">
               <svg class="icon yellow-thumb" aria-hidden="true">
                 <use xlink:href="#icon-thumb"></use>
@@ -82,24 +82,23 @@
               <span class="entity-polysemant-text">歧义理解</span><br/>
               <!-- <s:iterator value='#session.answerResultVO.words' id='word'> -->
               <!-- <s:if test='#word.name == #polysemantNamedEntity.entityName'> -->
-              <center>
-                <span style='font-family:"SimHei";color:yellow;'>
-                  {{ polysemantNamedEntity.entityName }}
-                </span>
-                <span style='font-family:"SimHei";'>
-                  至少含有
-                  <span style='font-family:"SimHei";color:yellow;'>
-                    <!-- <s:property value='#word.polysemantNamedEntities.size' /> -->
-                    {{ word.polysemantNamedEntities.length }}
+              <div class="ambiguous-understanding-title">
+                  <span class='yellow-text'>
+                    {{ polysemantNamedEntity.entityName }}
                   </span>
-                  种歧义理解
-                </span>
-              </center>
-              <div style='margin-left:20px;' v-for="polysemantNamedEntity in word.polysemantNamedEntities" :key="polysemantNamedEntity.id">
-                <svg class="icon yellow-thumb" aria-hidden="true" style='color:#ffd800;font-size:12px;margin-left:-2%;'>
+                  <span>
+                    至少含有
+                    <span class='yellow-text'>
+                      {{ word.polysemantNamedEntities.length }}
+                    </span>
+                    种歧义理解
+                  </span>
+              </div>
+              <div class="ambiguous-understanding-content" v-for="polysemantNamedEntity in word.polysemantNamedEntities" :key="polysemantNamedEntity.id">
+                <svg class="icon yellow-thumb icon-circle" aria-hidden="true">
                   <use xlink:href="#icon-circle"></use>
                 </svg>
-                <span style='font-size:10px;color:rgba(255, 255, 255, 0.65);'>
+                <span>
                   {{ polysemantNamedEntity.polysemantExplain }}
                 </span>
               </div>
@@ -316,6 +315,32 @@ export default {
 .entity-polysemant-text {
   font-family: LiSu;
   font-size: 20px;
+}
+
+.ambiguous-understanding-title {
+  text-align: center;
+}
+
+.ambiguous-understanding-title span {
+  font-size: 1em;
+}
+
+.yellow-text {
+  color: yellow !important;
+}
+
+.ambiguous-understanding-content { 
+  margin-left:20px;
+}
+
+.ambiguous-understanding-content span {
+  font-size:10px;color:rgba(255, 255, 255, 0.65);
+}
+
+.icon-circle {
+  margin-left:-2%;
+  font-size:12px;
+  color:#ffd800;
 }
 
 .knowledge-infos span,
