@@ -1,7 +1,7 @@
 <template>
   <font class="bwb">
 
-    <span v-if="param1 != null"> {{ param1 }} </span>
+    <span v-if="param1 != null">{{ param1 }}</span>
     <span v-if="param2 != null">{{ param2 }}</span>
 
   </font>
@@ -16,14 +16,13 @@ export default {
 
 <style scoped>
 .bwb {
-  font-size: 15px;
+  border: 1px #3385FF solid;
+  border-radius: 3px;
   padding: 1px;
   padding-left: 5px;
   padding-right: 5px;
+  font-size: 15px;
   background-color: #f6f6f6;
-  border-radius: 3px;
-  border: 1px #3385FF solid;
 }
-
 </style>
 

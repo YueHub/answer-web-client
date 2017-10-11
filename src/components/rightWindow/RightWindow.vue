@@ -1,7 +1,7 @@
 <template>
   <mu-popup popupClass="popup-right" position="right" :open="rightPopup" @close="close('right')" :overlay="false">
     <div class="left-window-contain">
-      <div class="knowledge-infos">
+      <div class="knowledge-infos scroll-bar-1">
         <div class="knowledge-info-title">
           <span>Answer知识网络</span>
         </div>
@@ -9,15 +9,12 @@
         <img src="/static/imgs/close.png" class="close-btn" @click="close('right')" />
 
         <div v-for="word in words" :key="word.id" v-if="word.polysemantNamedEntities.length != 0">
-
           <div class="entity-polysemant">
             <svg class="icon yellow-thumb" aria-hidden="true">
               <use xlink:href="#icon-thumb"></use>
             </svg>
             <!-- 歧义理解 -->
-            <span class="entity-polysemant-text">歧义理解</span><br/>
-            <!-- <s:iterator value='#session.answerResultVO.words' id='word'> -->
-            <!-- <s:if test='#word.name == #polysemantNamedEntity.entityName'> -->
+            <span class="content-title-text">歧义理解</span>
             <div class="ambiguous-understanding-title">
               <span class='yellow-text'>
                 {{ word.name }}
@@ -31,7 +28,7 @@
               </span>
             </div>
             <div class="ambiguous-understanding-content" v-for="(polysemantNamedEntity, index) in word.polysemantNamedEntities" :key="polysemantNamedEntity.id">
-              <svg class="icon yellow-thumb icon-circle" aria-hidden="true">
+              <svg class="icon icon-circle" aria-hidden="true">
                 <use xlink:href="#icon-circle"></use>
               </svg>
               <span>
@@ -79,7 +76,7 @@
                 <use xlink:href="#icon-thumb"></use>
               </svg>
               <!-- 相关对象 -->
-              <span class="object-text">相关对象</span><br/>
+              <span class="content-title-text">相关对象</span><br/>
               <!-- <s:iterator value='#polysemantNamedEntity.objectProperties' id='objectProperty'> -->
               <!-- <s:if test="#objectProperty.value != null"> -->
               <div class="object-border object-contain" v-for="objectProperty in polysemantNamedEntity.objectProperties" :key="objectProperty.id" v-if="objectProperty != null">
@@ -97,7 +94,7 @@
               <svg class="icon yellow-thumb" aria-hidden="true">
                 <use xlink:href="#icon-thumb"></use>
               </svg>
-              <span class="main-property-text">主要属性</span><br/>
+              <span class="content-title-text">主要属性</span><br/>
               <!-- <s:iterator value='#polysemantNamedEntity.dataProperties' id='dataProperty'> -->
               <!-- <s:if test="#dataProperty.value != null"> -->
               <div class="property-border" v-for="(dataProperty, key) in polysemantNamedEntity.dataProperties" :key="dataProperty.id" v-if="dataProperty != null">
@@ -148,191 +145,52 @@ export default {
 <style>
 .popup-right {
   display: flex;
-  width: 25%;
   height: 100%;
-  max-width: 25%;
   align-items: center;
 }
 
 .left-window-contain {
-  background: rgba(0, 0, 0, 0.72);
   width: 100%;
   height: 100%;
+  background: rgba(0, 0, 0, 0.72);
 }
 
-
 .knowledge-infos {
+  padding: 1em;
   width: 98%;
   height: 100%;
   overflow-y: auto;
-  padding: 1em;
+}
+
+.knowledge-infos span,
+.knowledge-infos p {
+  color: #FFF;
 }
 
 .knowledge-info-title span {
   margin-top: -20px;
-  font-size: 1.2em;
   font-style: oblique;
+  font-size: 1.2em;
+}
+
+.close-btn {
+  position: absolute;
+  top: 5px;
+  right: 15px;
+  display: block;
+  width: 2em;
+  height: 2em;
+  transition: 0.3s ease;
+  cursor: pointer;
 }
 
 .info-item-title {
   margin-top: 2%;
 }
 
-.entity-text {
-  margin-left: 4%;
-}
-
-.entity-class {
-  float: right;
-}
-
-.close-btn {
-  display: block;
-  position: absolute;
-  top: 5px;
-  right: 15px;
-  width: 2em;
-  height: 2em;
-  cursor: pointer;
-  transition: 0.3s ease;
-}
-
 .yellow-square {
-  font-size: 1.8em;
-  color: #ffd800;
-}
-
-.entity-text {
-  font-family: "楷体";
   font-size: 1.2em;
-  font-weight: bold;
-}
-
-.belong-text {
-  font-family: "SimHei";
-  font-size: 1.1em;
-}
-
-.entity-category-text {
-  border-bottom: 2px solid #ffd800;
-  font-family: "SimHei";
-  font-size: 1.3em;
-  color: yellow !important;
-}
-
-.info-divider {
-  width: 100%;
-  height: 2px;
-  margin-top: 0px;
-  overflow: hidden;
-  background: #ffd800;
-}
-
-.entity-img {
-  text-align: center;
-  margin-top: 2%;
-}
-
-.entity-img img {
-  width: 100px;
-  height: 100px;
-}
-
-.entity-intro {
-  margin-top: 2%;
-  width: 100%;
-  height: auto;
-}
-
-.entity-intro-text {
-  text-align: left;
-  text-indent: 2em;
-  font-family: "SimHei";
-}
-
-.yellow-thumb,
-.entity-property,
-.entity-polysemant {
-  font-size: 18px;
   color: #ffd800;
-}
-
-.entity-object {
-  width: 100%;
-  height: auto;
-  overflow: hidden;
-}
-
-.object-text {
-  font-family: LiSu;
-  font-size: 20px;
-}
-
-.object-border {
-  border-color: #ffd800;
-  border-width: 1px 1px 1px 1px;
-  border-bottom: 0.5px solid #ffd800;
-  border-style: solid;
-}
-
-.object-contain {
-  float: left;
-  width: 49px;
-  height: 49px;
-  margin-left: 14px;
-  margin-right: 8px;
-  margin-top: 10px;
-  margin-bottom: 5px;
-  text-align: center;
-}
-
-.object-link {
-  border-bottom: 1px solid #0BDA41;
-  font-family: "楷体";
-  font-weight: bold;
-  color: #FFFFFF;
-}
-
-.main-property-text {
-  font-family: LiSu;
-  font-size: 20px;
-}
-
-.property-border {
-  font-size: 15px;
-  padding: 1px;
-  padding-left: 5px;
-  padding-right: 5px;
-  background-color: rgb(71, 71, 71);
-  border-radius: 3px;
-  border: 1px #3385FF solid;
-  text-align: center;
-  margin-top: 5px;
-  margin-right: 11px;
-  height: 20px;
-  float: left;
-}
-
-.clearfix:after {
-  clear: both;
-  content: ".";
-  display: block;
-  margin: 0;
-  padding: 0;
-  font-size: 0;
-  height: 0px;
-  line-height: 0;
-  background: #000;
-  overflow: hidden;
-}
-
-.property-text {
-  font-family: LiSu;
-}
-
-.entity-polysemant-text {
-  font-family: LiSu;
-  font-size: 20px;
 }
 
 .ambiguous-understanding-title {
@@ -348,71 +206,163 @@ export default {
 }
 
 .ambiguous-understanding-content {
-  margin-left: 20px;
+  margin-left: 1em;
 }
 
 .ambiguous-understanding-content span a {
-  font-size: 10px;
+  margin-left: 0.5em;
+  font-size: 0.8em;
   color: rgba(255, 255, 255, 0.65);
 }
 
-.icon-circle {
-  margin-left: -2%;
-  font-size: 12px;
-  color: #ffd800;
-}
-
-.knowledge-infos span,
-.knowledge-infos p {
+.ambiguous-understanding-content span a:hover {
   color: #FFF;
 }
 
-
-
-
-
-
-
-
-/*定义滚动条高宽及背景 高宽分别对应横竖滚动条的尺寸*/
-
-.knowledge-infos::-webkit-scrollbar {
-  width: 4px;
-  height: 16px;
-  background-color: rgba(0, 0, 0, 0.4);
+.icon-circle {
+  font-size: 1em;
+  color: #ffd800;
 }
 
+.content-title-text {
+  font-family: LiSu;
+  font-size: 1.2em;
+}
 
+.entity-text {
+  margin-left: 2%;
+  font-family: "楷体";
+  font-size: 1.1em;
+  font-weight: bold;
+}
 
+.belong-text {
+  font-family: "SimHei";
+  font-size: 1em;
+}
 
+.entity-class {
+  float: right;
+}
 
+.entity-category-text {
+  border-bottom: 2px solid #ffd800;
+  font-family: "SimHei";
+  font-size: 1.1em;
+  color: yellow !important;
+}
 
+.info-divider {
+  overflow: hidden;
+  margin-top: 0px;
+  width: 100%;
+  height: 2px;
+  background: #ffd800;
+}
 
+.entity-img {
+  margin-top: 2%;
+  text-align: center;
+}
 
-/*定义滚动条轨道 内阴影+圆角*/
+.entity-img img {
+  width: 100px;
+  height: 100px;
+}
 
-.knowledge-infos::-webkit-scrollbar-track {
+.entity-intro {
+  margin-top: 2%;
+  width: 100%;
+  height: auto;
+}
+
+.entity-intro-text {
+  font-family: "SimHei";
+  text-align: left;
+  text-indent: 2em;
+}
+
+.yellow-thumb {
+  font-size: 1.2em;
+  color: #ffd800;
+}
+
+.entity-object {
+  overflow: hidden;
+  width: 100%;
+  height: auto;
+}
+
+.object-border {
+  border-bottom: 0.5px solid #ffd800;
+  border-width: 1px 1px 1px 1px;
+  border-style: solid;
+  border-color: #ffd800;
+}
+
+.object-contain {
+  float: left;
+  margin: 14px 10px 8px 5px;
+  width: 49px;
+  height: 49px;
+  text-align: center;
+}
+
+.object-link {
+  border-bottom: 1px solid #0BDA41;
+  font-family: "楷体";
+  font-weight: bold;
+  color: #FFFFFF;
+}
+
+.property-border {
+  float: left;
+  border: 1px #3385FF solid;
   border-radius: 3px;
-  background-color: rgba(0, 0, 0, 0.4);
-  -moz-box-shadow: inset 0 0 6px rgba(0, 0, 0, .3);
-  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
-  box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+  margin-top: 5px;
+  margin-right: 11px;
+  padding: 1px;
+  padding-left: 5px;
+  padding-right: 5px;
+  height: 20px;
+  font-size: 15px;
+  text-align: center;
+  background-color: rgb(71, 71, 71);
 }
 
+.clearfix:after {
+  overflow: hidden;
+  clear: both;
+  content: ".";
+  display: block;
+  margin: 0;
+  padding: 0;
+  height: 0px;
+  font-size: 0;
+  line-height: 0;
+  background: #000;
+}
 
+.property-text {
+  font-family: LiSu;
+}
 
+@media screen and (min-width: 1120px) {
+  .popup-right {
+    width: 24%;
+  }
+}
 
+@media screen and (min-width:770px) and (max-width:1120px) {
+  .popup-right {
+    width: 25%;
+  }
+}
 
-
-
-/*定义滑块 内阴影+圆角*/
-
-.knowledge-infos::-webkit-scrollbar-thumb {
-  border-radius: 10px;
-  background-color: rgba(255, 255, 255, 0.75);
-  -moz-box-shadow: inset 0 0 6px rgba(0, 0, 0, .3);
-  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, .3);
-  box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+@media screen and (max-width: 770px) {
+  .popup-right {
+    width: 100%;
+  }
 }
 </style>
 

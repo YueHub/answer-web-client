@@ -65,22 +65,22 @@ export default {
 
 @media screen and (min-width: 1120px) {
   .div-cloud {
-    max-width: 50%;
     margin: 3% auto;
+    max-width: 50%;
   }
 }
 
 @media screen and (min-width:770px) and (max-width:1120px) {
   .div-cloud {
-    max-width: 70%;
     margin: 3% auto;
+    max-width: 70%;
   }
 }
 
 @media screen and (max-width:770px) {
   .div-cloud {
-    max-width: 90%;
     margin: 5% auto;
+    max-width: 90%;
   }
 }
 </style>

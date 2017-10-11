@@ -138,7 +138,7 @@ export default {
       searchBarTextValue: '',
       answerResult: null,
       count: 1,
-      knowledgeGraphWidth: '730',
+      knowledgeGraphWidth: '725',
       knowledgeGraphHeight: '448'
     }
   },

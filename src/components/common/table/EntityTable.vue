@@ -1,5 +1,5 @@
 <template>
-  <table class="bt" border="1" style='text-align:center;'>
+  <table class="entity-table" border="1">
     <tbody>
       <tr class="th">
         <th class="tn tny">实体</th>
@@ -10,18 +10,18 @@
         <tr class="trh" v-for="lineData in word.polysemantNamedEntities" :key="lineData.id">
           <td class="tn">
             <a href="${pageContext.request.contextPath}/front/developerAction!answer.action?question=<s:property value='#word.name'/>" class="lk1" target="_blank">
-              <span style='font-family:"SimHei";font-weight:bold;'>
+              <span>
                 {{ lineData.entityName }}
               </span>
             </a>
           </td>
           <td>
-            <span style='font-family:"SimHei";'>
+            <span>
               {{ lineData.polysemantExplain }}
             </span>
           </td>
           <td>
-            <span style='font-family:"SimHei";'>
+            <span>
               {{ lineData.ontClass }}
             </span>
           </td>
@@ -37,23 +37,6 @@ export default {
 </script>
 
 <style scoped>
-.bt {
-  overflow: hidden;
-  display: block;
-  width: 100%;
-  table-layout: fixed;
-  padding-top: 2px;
-  padding-bottom: 2px;
-  border-collapse: collapse;
-  border-spacing: 5;
-  border: 0;
-  border-color: #c5c5c5
-}
-
-.th {
-  background-color: #dadada
-}
-
 th {
   font-weight: 700
 }
@@ -66,10 +49,36 @@ th {
   word-wrap: break-word
 }
 
+td span {
+  font-family: "SimHei";
+}
+
+.entity-table {
+  display: block;
+  overflow: hidden;
+  table-layout: fixed;
+  border-collapse: collapse;
+  border-spacing: 5;
+  border: 0;
+  border-color: #c5c5c5;
+  padding-top: 2px;
+  padding-bottom: 2px;
+  width: 100%;
+  text-align:center;
+}
+
+.th {
+  background-color: #dadada
+}
+
 .tn {
   white-space: nowrap;
   padding: 8px;
   min-width: 110px
+}
+
+.tn span {
+  font-weight: bold;
 }
 
 .tny {

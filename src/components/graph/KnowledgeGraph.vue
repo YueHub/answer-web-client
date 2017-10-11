@@ -1,9 +1,9 @@
 <template>
-  <canvas id="knowledge_graph" :width="width" :height="height" style="opacity: 1;">
+  <canvas id="knowledge_graph" :width="width" :height="height">
   </canvas>
 </template>
 
-<script>
+<script scoped>
 var knowledgeGraph = require('./knowledge-graph')
 export default {
   props: ['knowledgeGraphVOs', 'width', 'height'],
@@ -59,8 +59,8 @@ export default {
 }
 </script>
 
-
-
-<style>
-
+<style scoped>
+#knowledge_graph {
+  opacity: 1;
+}
 </style>
