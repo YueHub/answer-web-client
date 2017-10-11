@@ -1,11 +1,13 @@
 <template>
   <div>
+
     <!-- logo -->
     <div class="logo-results-main">
       <router-link to="/index">
         <img class="logo-img" src="/static/imgs/logo/answer-logo.png" alt="logo" />
       </router-link>
     </div>
+
     <!-- search bar -->
     <div class="result-search-bar">
       <search-bar @searchBarTextChangeListener="searchBarTextChange" @searchBarBtnClickListener="searchBarBtnClick"></search-bar>
@@ -14,15 +16,14 @@
     <!-- answer result -->
     <div class="answer-result" v-if="answerResult != null && answerResult != ''">
       <div class="explain-text" v-for="(word, index) in answerResult.words" :key="word.id" v-if="word.polysemantNamedEntities.length > 0">
-        <span class="explain-stress"> {{ word.name }}</span>
+        <span class="explain-stress">{{ word.name }}</span>
         至少含有
         <span class="explain-stress">{{ word.polysemantNamedEntities.length }}</span>
-        种歧义理解 Answer会根据问题自动识别
+        种歧义理解, Answer 会根据问题自动识别
       </div>
-      
 
       <!-- short answer -->
-      <div v-for="shortAnswerPolysemant in answerResult.shortAnswer.polysemantSituationVOs" :key="shortAnswerPolysemant.id">
+      <div class="result-item" v-for="shortAnswerPolysemant in answerResult.shortAnswer.polysemantSituationVOs" :key="shortAnswerPolysemant.id">
         <div>
           <span class="result-title">
             {{ answerResult.question }}
@@ -31,7 +32,7 @@
         <div class="result-card">
           <div class="answer-item" v-for="(queryResult, index) in shortAnswerPolysemant.queryResults" :key="queryResult.id">
             <span class="short-answer-text" v-if="queryResult.answers.length > 0 && answer != null" v-for="answer in queryResult.answers" :key="answer.id">
-              {{ answer.content  + "  "}}
+              {{ answer.content + " "}}
             </span>
             <result-tag class="short-answer-tag" v-if="queryResult.answers.length > 0" :param1="shortAnswerPolysemant.predicateDisambiguationStatements[index].subject.name" :param2="shortAnswerPolysemant.predicateDisambiguationStatements[index].predicate.disambiguationName">
             </result-tag>
@@ -50,38 +51,42 @@
       </div>
 
       <!-- knowledge graph -->
-      <div id="knowledge-graph" v-if="answerResult != null && answerResult.knowledgeGraphVOs != null">
-        <div>
+      <div class="result-item">
+        <div id="knowledge-graph" v-if="answerResult != null && answerResult.knowledgeGraphVOs != null">
           <div>
-            <span class="result-title">
-              逻辑图谱
-            </span>
+            <div>
+              <span class="result-title">
+                逻辑图谱
+              </span>
+            </div>
           </div>
-        </div>
-        <div class="result-card">
-          <div>
-            <knowledge-graph ref="knowledgeGraph" :knowledgeGraphVOs="answerResult.knowledgeGraphVOs"></knowledge-graph>
+          <div class="result-card">
+            <div>
+              <knowledge-graph ref="knowledgeGraph" :knowledgeGraphVOs="answerResult.knowledgeGraphVOs" :width="knowledgeGraphWidth" :height="knowledgeGraphHeight"></knowledge-graph>
+            </div>
           </div>
         </div>
       </div>
 
       <!-- ner answer -->
-      <div class="ner-result" v-if="answerResult != null && answerResult.words != null">
-        <div>
-          <span class="result-title">
-            命名实体识别
-          </span>
-        </div>
-        <div class="result-card">
-          <div class="ner-result-table">
-            <result-table :tableData="answerResult.words"></result-table>
-            <answer-btn class="new-answer-btn" @answerBtnClickListener="toggleRightWindow"></answer-btn>
+      <div class="result-item">
+        <div class="ner-result" v-if="answerResult != null && answerResult.words != null">
+          <div>
+            <span class="result-title">
+              命名实体识别
+            </span>
+          </div>
+          <div class="result-card">
+            <div class="ner-result-table">
+              <entity-table :tableData="answerResult.words"></entity-table>
+              <answer-btn class="new-answer-btn" @answerBtnClickListener="toggleRightWindow"></answer-btn>
+            </div>
           </div>
         </div>
       </div>
 
       <!-- page answer -->
-      <div>
+      <div class="result-item">
         <div>
           <span class="result-title">
             网页搜索结果
@@ -111,7 +116,7 @@ import { mapState, mapMutations } from 'vuex'
 import searchBar from '@/components/common/searchBar/SearchBar'
 import resultTag from '@/components/common/tag/resultTag'
 import knowledgeGraph from '@/components/graph/KnowledgeGraph'
-import resultTable from '@/components/common/resultTable/ResultTable'
+import entityTable from '@/components/common/table/EntityTable'
 import answerBtn from '@/components/common/button/AnswerBtn'
 import pageResultItem from '@/components/result/PageResultItem'
 import rightWindow from '@/components/rightWindow/RightWindow'
@@ -123,7 +128,7 @@ export default {
     'search-bar': searchBar,
     'result-tag': resultTag,
     'knowledge-graph': knowledgeGraph,
-    'result-table': resultTable,
+    'entity-table': entityTable,
     'answer-btn': answerBtn,
     'page-result-item': pageResultItem,
     'right-window': rightWindow
@@ -132,16 +137,22 @@ export default {
     return {
       searchBarTextValue: '',
       answerResult: null,
-      count: 1
+      count: 1,
+      knowledgeGraphWidth: '730',
+      knowledgeGraphHeight: '448'
     }
   },
   mounted() {
     if (this.searchQuery != null && this.searchQuery != '') {
       this.startAnswer(this.successHandler, this.errorHandler)
     }
+    if (this.platform == 0) { // 移动端
+      this.knowledgeGraphWidth = '351'
+      this.knowledgeGraphHeight = '540'
+    }
   },
   computed: {
-    ...mapState(['searchQuery'])
+    ...mapState(['searchQuery', 'platform'])
   },
   methods: {
     ...mapMutations(['setSearchQuery']),
@@ -175,7 +186,6 @@ export default {
     },
     successHandler: function(response) {
       this.answerResult = response.data
-      console.log(this.answerResult)
     },
     errorHandler: function(error) {
       console.log("error: ", error)
@@ -188,64 +198,44 @@ export default {
 </script>
 
 <style scoped>
-/* .result-search-bar {
-  zoom: 1;
-} */
-
-
-/* 消除浮动 */
-
-
-/* .result-search-bar :after {
-  clear: both;
-  content: '.';
-  display: block;
-  width: 0;
-  height: 0;
-  visibility: hidden;
-} */
-
-.answer-result {
-  margin-top: 6%;
-  margin-left: auto;
-  margin-right: auto;
-  width: 50%;
+.logo-img {
+  width: 100%;
+  height: 100%;
 }
 
 .explain-text {
   width: 100%;
-  text-align: center;
   font-size: 0.9em;
+  text-align: center;
   color: #757373;
 }
 
+.explain-stress {
+  font-weight: bold;
+}
 
 .result-title {
   font-style: oblique;
-  font-size: 1.3em;
-
+  font-size: 1.2em;
 }
+
 
 .result-card {
   position: relative;
   margin-top: 1.5%;
-  width: 100%;
   padding-top: 2%;
   padding-bottom: 2%;
-  padding-left: 2%;
+  width: 100%;
   background-color: #FFF;
   -moz-box-shadow: 0 1px 3px rgba(0, 0, 0, .3);
   -webkit-box-shadow: 0 1px 3px rgba(0, 0, 0, .3);
   box-shadow: 0 1px 3px rgb(51, 133, 255);
 }
 
-#knowledge-graph .result-card {
-  padding: 1% !important;
-}
-
 .answer-item {
   padding-left: 1em;
-  padding-top: 1em;
+  text-align: left;
+  text-indent: 2em;
 }
 
 .short-answer-text {
@@ -259,13 +249,9 @@ export default {
 
 .result-card-explain {
   margin-top: 15px;
-  text-align: center;
   font-size: 0.8em;
+  text-align: center;
   color: #737373;
-}
-
-.explain-stress {
-  font-weight: bold;
 }
 
 .ner-result {
@@ -285,22 +271,70 @@ export default {
   color: #FFF;
 }
 
-
-.logo-img {
-  width: 100%;
-  height: 100%;
+#knowledge-graph .result-card {
+  padding: 1% !important;
 }
 
 @media screen and (min-width: 1120px) {
   .logo-results-main {
+    margin: 20px auto 20px;
     width: 10%;
     height: 5%;
-    margin: 20px auto 20px;
   }
   .result-search-bar {
+    margin: auto;
     width: 50%;
+  }
+  .answer-result {
+    margin-top: 6%;
     margin-right: auto;
     margin-left: auto;
+    width: 50%;
+  }
+  .result-item {
+    margin-top: 2%;
+  }
+}
+
+@media screen and (min-width:770px) and (max-width:1120px) {
+  .logo-results-main {
+    margin: 20px auto 20px;
+    width: 10%;
+    height: 5%;
+  }
+  .result-search-bar {
+    margin: auto;
+    width: 50%;
+  }
+  .answer-result {
+    margin-top: 15%;
+    margin-right: auto;
+    margin-left: auto;
+    width: 80%;
+  }
+  .result-item {
+    margin-top: 3%;
+  }
+}
+
+@media screen and (max-width: 770px) {
+  .logo-results-main {
+    margin: 20px auto 20px;
+    width: 40%;
+    height: 5%;
+  }
+  .result-search-bar {
+    margin: auto;
+    width: 95%;
+  }
+  .answer-result {
+    margin-top: 20%;
+    margin-right: auto;
+    margin-left: auto;
+    width: 95%;
+  }
+  .result-item {
+    margin-top: 4%;
   }
 }
 </style>

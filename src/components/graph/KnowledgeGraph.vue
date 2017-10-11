@@ -1,23 +1,19 @@
 <template>
-  <canvas id="knowledge_graph" width="820" height="448" style="opacity: 1;">
+  <canvas id="knowledge_graph" :width="width" :height="height" style="opacity: 1;">
   </canvas>
 </template>
 
 <script>
 var knowledgeGraph = require('./knowledge-graph')
 export default {
-  props: ['knowledgeGraphVOs'],
-  // beforeCreate() {
-  //   arborInit.yInit($)
-  //   arborGraphicsInit.yInit($)
-  // },
+  props: ['knowledgeGraphVOs', 'width', 'height'],
   mounted() {
     this.$nextTick(() => {
       this.draw()
     })
   },
   watch: {
-    knowledgeGraphVOs: function () {
+    knowledgeGraphVOs: function() {
       this.draw()
     }
   },
@@ -26,9 +22,6 @@ export default {
       if (this.knowledgeGraphVOs == null || this.knowledgeGraphVOs == undefined) {
         return
       }
-      $.getScript('/static/js/libs/arbor/arbor.js')
-      $.getScript('/static/js/libs/arbor/arbor-graphics.js')
-      knowledgeGraph = require('./knowledge-graph')
       // 初始化
       var sys_knowledge_graph = knowledgeGraph.getArbor().ParticleSystem()
       // 设置相关参数	stiffness:硬度	repulsion:排斥力	gravity:重力

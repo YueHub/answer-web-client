@@ -22,7 +22,7 @@
   </div>
 </template>
 
-<script>
+<script scoped>
 import { mapState, mapMutations } from 'vuex'
 
 import { Message } from 'element-ui'
@@ -77,7 +77,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 .logo-main {
   cursor: pointer;
 }
@@ -89,14 +89,14 @@ export default {
 
 @media screen and (min-width:1120px) {
   .logo-main {
-    width: 300px;
-    line-height: 35%;
     overflow: hidden;
     margin: 8% auto 4%;
+    width: 300px;
+    line-height: 35%;
   }
   .index-search-bar {
-    width: 50%;
     margin: auto;
+    width: 50%;
   }
   .index-tag-cloud {
     margin-top: 10%;
@@ -105,14 +105,14 @@ export default {
 
 @media screen and (min-width:770px) and (max-width:1120px) {
   .logo-main {
+    overflow: hidden;
+    margin: 20% auto 4%;
     width: 400px;
     line-height: 10px;
-    overflow: hidden;
-     margin: 20% auto 4%;
   }
   .index-search-bar {
-    width: 70%;
     margin: auto;
+    width: 70%;
   }
   .index-tag-cloud {
     margin-top: 17%;
@@ -121,14 +121,14 @@ export default {
 
 @media screen and (max-width: 770px) {
   .logo-main {
-    width: 55%;
-    line-height: 35%;
     overflow: hidden;
     margin: 15% auto 15%;
+    width: 55%;
+    line-height: 35%;
   }
   .index-search-bar {
-    width: 95%;
     margin: auto;
+    width: 95%;
   }
   .index-tag-cloud {
     margin-top: 40%;
