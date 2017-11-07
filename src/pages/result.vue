@@ -112,7 +112,7 @@
 <script scoped>
 import Vue from 'vue'
 import { Message } from 'element-ui'
-import { mapState, mapMutations } from 'vuex'
+import { mapState, mapMutations, mapActions } from 'vuex'
 import searchBar from '@/components/common/searchBar/SearchBar'
 import resultTag from '@/components/common/tag/resultTag'
 import knowledgeGraph from '@/components/graph/KnowledgeGraph'
@@ -136,7 +136,6 @@ export default {
   data() {
     return {
       searchBarTextValue: '',
-      answerResult: null,
       count: 1,
       knowledgeGraphWidth: '725',
       knowledgeGraphHeight: '448'
@@ -152,9 +151,10 @@ export default {
     }
   },
   computed: {
-    ...mapState(['searchQuery', 'platform'])
+    ...mapState(['searchQuery', 'platform', 'answerResult'])
   },
   methods: {
+    ...mapActions(['searchAnswer']),
     ...mapMutations(['setSearchQuery']),
     searchBarTextChange: function(searchBarTextValue) {
       this.searchBarTextValue = searchBarTextValue;
@@ -176,16 +176,10 @@ export default {
         });
         return
       }
-      axios.get('/answer?q=' + this.searchQuery)
-        .then(function(response) {
-          successHandler(response)
-        })
-        .catch(function(error) {
-          errorHandler(error)
-        });
+      this.searchAnswer().then(this.successHandler, this.errorHandler)
     },
-    successHandler: function(response) {
-      this.answerResult = response.data
+    successHandler: function(answerResult) {
+      console.log(answerResult)
     },
     errorHandler: function(error) {
       console.log("error: ", error)
