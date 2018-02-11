@@ -179,7 +179,7 @@ export default {
       this.searchAnswer().then(this.successHandler, this.errorHandler)
     },
     successHandler: function(answerResult) {
-      console.log(answerResult)
+      console.log("返回成功")
     },
     errorHandler: function(error) {
       console.log("error: ", error)
@@ -227,7 +227,7 @@ export default {
 }
 
 .answer-item {
-  padding-left: 1em;
+  padding: 0.8%;
   text-align: left;
   text-indent: 2em;
 }
