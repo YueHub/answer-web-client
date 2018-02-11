@@ -39,3 +39,6 @@ npm run build
 * 搜索结果:
 
 ![image](./screenShots/搜索结果-2.png)
+
+## LICENSE
+[MIT license](https://github.com/YueHub/answer-web-client/blob/master/LICENSE.md)
