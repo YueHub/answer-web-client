@@ -99,7 +99,7 @@ export default {
     width: 50%;
   }
   .index-tag-cloud {
-    margin-top: 10%;
+    margin-top: 9%;
   }
 }
 

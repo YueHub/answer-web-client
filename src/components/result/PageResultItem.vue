@@ -1,6 +1,6 @@
 <template>
   <div class="b_algo" style="padding:10px;">
-    <div>
+    <!-- <div>
       <a style="font-size:18px;color:#464646;" href="http://comic.qq.com/zt2013/hynaruto/index.htm" target="_blank">
         <strong>火影忍者naruto</strong>_腾讯动漫_腾讯网</a>
     </div>
@@ -23,7 +23,7 @@
         </a>
 
       </div>
-    </div>
+    </div> -->
   </div>
 </template>
 
