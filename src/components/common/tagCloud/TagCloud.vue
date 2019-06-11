@@ -3,8 +3,10 @@
   <div class="div-cloud">
     <canvas id="cloud" :width="width" :height="height">
       <ul>
-        <li :key="cloudWord.id" v-for="cloudWord in cloudWords">
-          <a href="javascript: void(0)" @click="tagCloudJump(cloudWord)"> {{ cloudWord }}</a>
+        <li v-for="cloudWord in cloudWords" :key="cloudWord.id">
+          <a href="javascript: void(0)" @click="tagCloudJump(cloudWord)">
+            {{ cloudWord }}
+          </a>
         </li>
       </ul>
     </canvas>
@@ -12,45 +14,63 @@
 </template>
 
 <script scoped>
-import * as DrawTagCloud from './tagcanvas.min.js'
+import * as DrawTagCloud from '../../thirdparty/tag-cloud/tagcanvas.min';
 
-import { mapMutations } from 'vuex'
+import {mapMutations} from 'vuex';
 
 export default {
-  props: ['cloudWords', 'width', 'height'],
+  props: {
+    cloudWords: {
+      type: Array,
+      default: function() {
+        return [];
+      },
+    },
+    width: {
+      type: String,
+      default: function() {
+        return '';
+      },
+    },
+    height: {
+      type: String,
+      default: function() {
+        return '';
+      },
+    },
+  },
   mounted() {
     this.$nextTick(() => {
-      DrawTagCloud.drawTagCloud()
+      DrawTagCloud.drawTagCloud();
       window.onload = function() {
         try {
-          window.TagCanvas.Start('cloud', null, {
+          new window.TagCanvas.Start('cloud', null, {
             textFont: 'Verdana, Geneva, sans-serif',
             textColour: '#494949',
             textHeight: 18,
-            wheelZoom: true
-          })
+            wheelZoom: true,
+          });
         } catch (e) {
-          document.getElementsByClassName('div-cloud').style.display = 'none'
+          document.getElementsByClassName('div-cloud').style.display = 'none';
         }
-      }
-    })
+      };
+    });
   },
   methods: {
     ...mapMutations({
-      setSearchQuery: 'setSearchQuery'
+      setSearchQuery: 'setSearchQuery',
     }),
 
     tagCloudJump: function(cloudWord) {
-      this.$router.push({ name: 'Result' })
-      
+      this.$router.push({name: 'Result'});
+
       this.setSearchQuery({
         type: 'setSearchQuery',
-        searchQuery: cloudWord
-      })
-    }
-  }
-
-}
+        searchQuery: cloudWord,
+      });
+    },
+  },
+};
 </script>
 
 <style scoped>
