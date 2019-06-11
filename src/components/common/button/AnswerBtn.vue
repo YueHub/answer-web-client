@@ -7,11 +7,11 @@
 <script scoped>
 export default {
   methods: {
-    btnClick: function () {
-      this.$emit('answerBtnClickListener')
-    }
-  }
-}
+    btnClick: function() {
+      this.$emit('answerBtnClickListener');
+    },
+  },
+};
 </script>
 
 <style>

@@ -2,14 +2,29 @@
   <table class="entity-table" border="1">
     <tbody>
       <tr class="th">
-        <th class="tn tny">实体</th>
-        <th width='70%'>歧义理解</th>
-        <th width='30%'>所属类</th>
+        <th class="tn tny">
+          实体
+        </th>
+        <th width="70%">
+          歧义理解
+        </th>
+        <th width="30%">
+          所属类
+        </th>
       </tr>
       <template v-for="word in tableData">
-        <tr class="trh" v-for="lineData in word.polysemantNamedEntities" :key="lineData.id">
+        <tr
+          v-for="lineData in word.polysemantNamedEntities"
+          :key="lineData.id"
+          class="trh"
+        >
           <td class="tn">
-            <a href="${pageContext.request.contextPath}/front/developerAction!answer.action?question=<s:property value='#word.name'/>" class="lk1" target="_blank">
+            <a
+              class="lk1" target="_blank"
+              href="${pageContext.request.contextPath}/front/
+              developerAction!answer.action?question=
+              <s:property value='#word.name'/>"
+            >
               <span>
                 {{ lineData.entityName }}
               </span>
@@ -32,8 +47,15 @@
 </template>
 <script>
 export default {
-  props: ['tableData']
-}
+  props: {
+    tableData: {
+      type: Array,
+      default: function() {
+        return [];
+      },
+    },
+  },
+};
 </script>
 
 <style scoped>

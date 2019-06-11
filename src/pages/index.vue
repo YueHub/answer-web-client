@@ -1,80 +1,90 @@
 <template>
   <div>
-
     <!-- logo -->
     <div class="logo-main">
       <router-link to="/index">
-        <img class="logo-img" src="/static/imgs/logo/answer-logo.png" alt="logo" />
+        <img
+          alt="logo"
+          class="logo-img"
+          src="/static/imgs/logo/answer-logo.png"
+        >
       </router-link>
     </div>
 
     <!-- search bar -->
     <div class="index-search-bar">
-      <search-bar @searchBarTextChangeListener="searchBarTextChange" @searchBarBtnClickListener="searchBarBtnClick">
-      </search-bar>
+      <search-bar
+        @searchBarTextChangeListener="searchBarTextChange"
+        @searchBarBtnClickListener="searchBarBtnClick"
+      />
     </div>
 
     <!-- tag cloud -->
     <div class="index-tag-cloud">
-      <tag-cloud :cloudWords="cloudWords" :width="tagCloudWidth" :height="tagCloudHeight">
-      </tag-cloud>
+      <tag-cloud
+        :cloud-words="cloudWords"
+        :width="tagCloudWidth"
+        :height="tagCloudHeight"
+      />
     </div>
   </div>
 </template>
 
 <script scoped>
-import { mapState, mapMutations } from 'vuex'
+import {mapState, mapMutations} from 'vuex';
 
-import { Message } from 'element-ui'
+import {Message} from 'element-ui';
 
-import searchBar from '@/components/common/searchBar/SearchBar'
-import tagCloud from '@/components/common/tagCloud/TagCloud'
+import searchBar from '@/components/common/searchBar/SearchBar';
+import tagCloud from '@/components/common/tagCloud/TagCloud';
 
 export default {
   components: {
     'search-bar': searchBar,
-    'tag-cloud': tagCloud
+    'tag-cloud': tagCloud,
   },
   data() {
     return {
       searchInputTextValue: '',
       tagCloudWidth: '738px',
-      tagCloudHeight: '350px'
-    }
-  },
-  mounted () {
-    this.$nextTick(() => {
-      if (this.platform == 0) {
-        
-      }
-    })
+      tagCloudHeight: '350px',
+    };
   },
   computed: {
-    ...mapState(['platform', 'cloudWords'])
+    ...mapState(['platform', 'cloudWords']),
+  },
+  mounted() {
+    this.$nextTick(() => {
+      if (this.platform == 0) {
+
+      }
+    });
   },
   methods: {
     ...mapMutations(['setSearchQuery']),
     searchBarTextChange: function(searchInputTextValue) {
-      this.searchInputTextValue = searchInputTextValue
+      this.searchInputTextValue = searchInputTextValue;
     },
     searchBarBtnClick: function() {
-      if (this.searchInputTextValue == '') { // 如果是空字符串
-        Message({
+      /* 如果是空字符串 */
+      if (this.searchInputTextValue == '') {
+        new Message({
           showClose: true,
           message: '请输入搜索请求',
           duration: 2000,
-          type: 'warning'
+          type: 'warning',
         });
-        return
+        return;
       }
-      this.$router.push({ name: 'Result' })
+      this.$router.push({name: 'Result'});
+      /* 更新搜索请求串 */
       this.setSearchQuery({
         type: 'setSearchQuery',
-        searchQuery: this.searchInputTextValue
-      })   // 更新搜索请求串
-    }
-  }
-}
+        searchQuery: this.searchInputTextValue,
+      });
+    },
+  },
+};
 </script>
 
 <style scoped>

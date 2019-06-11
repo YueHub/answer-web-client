@@ -1,0 +1,29 @@
+env:
+  browser: true
+  es6: true
+extends:
+  - 'google'
+  - 'plugin:vue/recommended'
+  # - 'plugin:vue/essential'
+globals:
+  Atomics: readonly
+  SharedArrayBuffer: readonly
+parserOptions:
+  ecmaVersion: 2018
+  sourceType: module
+plugins:
+  - vue
+rules: {
+  "vue/max-attributes-per-line": [
+    "error",
+    {
+      "singleline": 3,
+      "multiline": {
+        "max": 3,
+        "allowFirstLine": false
+    }
+  }],
+  "vue/attribute-hyphenation": ["error", "always", {
+    "ignore": ['popupClass']
+  }]
+}

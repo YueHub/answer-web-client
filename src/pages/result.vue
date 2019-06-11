@@ -1,58 +1,107 @@
 <template>
   <div>
-
     <!-- logo -->
     <div class="logo-results-main">
       <router-link to="/index">
-        <img class="logo-img" src="/static/imgs/logo/answer-logo.png" alt="logo" />
+        <img
+          alt="logo"
+          class="logo-img"
+          src="/static/imgs/logo/answer-logo.png"
+        >
       </router-link>
     </div>
 
     <!-- search bar -->
     <div class="result-search-bar">
-      <search-bar @searchBarTextChangeListener="searchBarTextChange" @searchBarBtnClickListener="searchBarBtnClick"></search-bar>
+      <search-bar
+        @searchBarTextChangeListener="searchBarTextChange"
+        @searchBarBtnClickListener="searchBarBtnClick"
+      />
     </div>
 
     <!-- answer result -->
-    <div class="answer-result" v-if="answerResult != null && answerResult != ''">
-      <div class="explain-text" v-for="(word, index) in answerResult.words" :key="word.id" v-if="word.polysemantNamedEntities.length > 0">
-        <span class="explain-stress">{{ word.name }}</span>
-        至少含有
-        <span class="explain-stress">{{ word.polysemantNamedEntities.length }}</span>
-        种歧义理解, Answer 会根据问题自动识别
+    <div
+      v-if="answerResult != null && answerResult != ''"
+      class="answer-result"
+    >
+      <div
+        v-for="word in answerResult.words"
+        :key="word.id"
+        class="explain-text"
+      >
+        <template v-if="word.polysemantNamedEntities.length > 0">
+          <span class="explain-stress">{{ word.name }}</span>
+          至少含有
+          <span class="explain-stress">
+            {{ word.polysemantNamedEntities.length }}
+          </span>
+          种歧义理解, Answer 会根据问题自动识别
+        </template>
       </div>
 
       <!-- short answer -->
-      <div class="result-item" v-for="shortAnswerPolysemant in answerResult.shortAnswer.polysemantSituationVOs" :key="shortAnswerPolysemant.id">
+      <div
+        v-for="shortAnswerPolysemant in
+          answerResult.shortAnswer.polysemantSituationVOs"
+        :key="shortAnswerPolysemant.id"
+        class="result-item"
+      >
         <div>
           <span class="result-title">
             {{ answerResult.question }}
           </span>
         </div>
         <div class="result-card">
-          <div class="answer-item" v-for="(queryResult, index) in shortAnswerPolysemant.queryResults" :key="queryResult.id">
-            <span class="short-answer-text" v-if="queryResult.answers.length > 0 && answer != null" v-for="answer in queryResult.answers" :key="answer.id">
-              {{ answer.content + " "}}
+          <div
+            v-for="queryResult in shortAnswerPolysemant.queryResults"
+            :key="queryResult.id"
+            class="answer-item"
+          >
+            <span
+              v-for="answer in queryResult.answers"
+              :key="answer.id"
+              class="short-answer-text"
+            >
+              <template v-if="queryResult.answers.length > 0 && answer != null">
+                {{ answer.content + " " }}
+              </template>
             </span>
-            <result-tag class="short-answer-tag" v-if="queryResult.answers.length > 0" :param1="shortAnswerPolysemant.predicateDisambiguationStatements[index].subject.name" :param2="shortAnswerPolysemant.predicateDisambiguationStatements[index].predicate.disambiguationName">
-            </result-tag>
+            <result-tag
+              v-if="queryResult.answers.length > 0"
+              class="short-answer-tag"
+              :param1="shortAnswerPolysemant
+                .predicateDisambiguationStatements[index].subject.name"
+              :param2="shortAnswerPolysemant
+                .predicateDisambiguationStatements[index]
+                .predicate.disambiguationName"
+            />
           </div>
         </div>
-        <div class="result-card-explain" v-for="activePolysemantNamedEntitie in shortAnswerPolysemant.activePolysemantNamedEntities" v-if="activePolysemantNamedEntitie != null" :key="activePolysemantNamedEntitie.id">
-          如果
-          <span class="explain-stress">
-            {{ activePolysemantNamedEntitie.entityName }}
-          </span>
-          指的是
-          <span class="explain-stress">
-            {{ activePolysemantNamedEntitie.polysemantExplain }}
-          </span>
+        <div
+          v-for="activePolysemantNamedEntitie in
+            shortAnswerPolysemant.activePolysemantNamedEntities"
+          :key="activePolysemantNamedEntitie.id"
+          class="result-card-explain"
+        >
+          <template v-if="activePolysemantNamedEntitie != null">
+            如果
+            <span class="explain-stress">
+              {{ activePolysemantNamedEntitie.entityName }}
+            </span>
+            指的是
+            <span class="explain-stress">
+              {{ activePolysemantNamedEntitie.polysemantExplain }}
+            </span>
+          </template>
         </div>
       </div>
 
       <!-- knowledge graph -->
       <div class="result-item">
-        <div id="knowledge-graph" v-if="answerResult != null && answerResult.knowledgeGraphVOs != null">
+        <div
+          v-if="answerResult != null && answerResult.knowledgeGraphVOs != null"
+          id="knowledge-graph"
+        >
           <div>
             <div>
               <span class="result-title">
@@ -62,7 +111,12 @@
           </div>
           <div class="result-card">
             <div>
-              <knowledge-graph ref="knowledgeGraph" :knowledgeGraphVOs="answerResult.knowledgeGraphVOs" :width="knowledgeGraphWidth" :height="knowledgeGraphHeight"></knowledge-graph>
+              <knowledge-graph
+                ref="knowledgeGraph"
+                :knowledge-graph-vos="answerResult.knowledgeGraphVOs"
+                :width="knowledgeGraphWidth"
+                :height="knowledgeGraphHeight"
+              />
             </div>
           </div>
         </div>
@@ -70,7 +124,10 @@
 
       <!-- ner answer -->
       <div class="result-item">
-        <div class="ner-result" v-if="answerResult != null && answerResult.words != null">
+        <div
+          v-if="answerResult != null && answerResult.words != null"
+          class="ner-result"
+        >
           <div>
             <span class="result-title">
               命名实体识别
@@ -78,8 +135,11 @@
           </div>
           <div class="result-card">
             <div class="ner-result-table">
-              <entity-table :tableData="answerResult.words"></entity-table>
-              <answer-btn class="new-answer-btn" @answerBtnClickListener="toggleRightWindow"></answer-btn>
+              <entity-table :table-data="answerResult.words" />
+              <answer-btn
+                class="new-answer-btn"
+                @answerBtnClickListener="toggleRightWindow"
+              />
             </div>
           </div>
         </div>
@@ -94,34 +154,32 @@
         </div>
         <div class="result-card">
           <div>
-            <page-result-item></page-result-item>
+            <page-result-item />
           </div>
         </div>
       </div>
 
       <!-- right window - knowledge net -->
       <div>
-        <right-window :words="answerResult.words" ref="rightWindow"></right-window>
+        <right-window
+          ref="rightWindow"
+          :words="answerResult.words"
+        />
       </div>
-
     </div>
-
   </div>
 </template>
 
 <script scoped>
-import Vue from 'vue'
-import { Message } from 'element-ui'
-import { mapState, mapMutations, mapActions } from 'vuex'
-import searchBar from '@/components/common/searchBar/SearchBar'
-import resultTag from '@/components/common/tag/resultTag'
-import knowledgeGraph from '@/components/graph/KnowledgeGraph'
-import entityTable from '@/components/common/table/EntityTable'
-import answerBtn from '@/components/common/button/AnswerBtn'
-import pageResultItem from '@/components/result/PageResultItem'
-import rightWindow from '@/components/rightWindow/RightWindow'
-
-import axios from 'axios'
+import {Message} from 'element-ui';
+import {mapState, mapMutations, mapActions} from 'vuex';
+import searchBar from '@/components/common/searchBar/SearchBar';
+import resultTag from '@/components/common/tag/resultTag';
+import knowledgeGraph from '@/components/graph/KnowledgeGraph';
+import entityTable from '@/components/common/table/EntityTable';
+import answerBtn from '@/components/common/button/AnswerBtn';
+import pageResultItem from '@/components/result/PageResultItem';
+import rightWindow from '@/components/rightWindow/RightWindow';
 
 export default {
   components: {
@@ -131,27 +189,28 @@ export default {
     'entity-table': entityTable,
     'answer-btn': answerBtn,
     'page-result-item': pageResultItem,
-    'right-window': rightWindow
+    'right-window': rightWindow,
   },
   data() {
     return {
       searchBarTextValue: '',
       count: 1,
       knowledgeGraphWidth: '725',
-      knowledgeGraphHeight: '448'
-    }
+      knowledgeGraphHeight: '448',
+    };
+  },
+  computed: {
+    ...mapState(['searchQuery', 'platform', 'answerResult']),
   },
   mounted() {
     if (this.searchQuery != null && this.searchQuery != '') {
-      this.startAnswer(this.successHandler, this.errorHandler)
+      this.startAnswer(this.successHandler, this.errorHandler);
     }
-    if (this.platform == 0) { // 移动端
-      this.knowledgeGraphWidth = '351'
-      this.knowledgeGraphHeight = '540'
+    /* 移动端 */
+    if (this.platform == 0) {
+      this.knowledgeGraphWidth = '351';
+      this.knowledgeGraphHeight = '540';
     }
-  },
-  computed: {
-    ...mapState(['searchQuery', 'platform', 'answerResult'])
   },
   methods: {
     ...mapActions(['searchAnswer']),
@@ -160,35 +219,35 @@ export default {
       this.searchBarTextValue = searchBarTextValue;
       this.setSearchQuery({
         type: 'setSearchQuery',
-        searchQuery: searchBarTextValue
-      })
+        searchQuery: searchBarTextValue,
+      });
     },
     searchBarBtnClick: function() {
-      this.startAnswer(this.successHandler, this.errorHandler)
+      this.startAnswer(this.successHandler, this.errorHandler);
     },
     startAnswer: function(successHandler, errorHandler) {
       if (this.searchQuery == '') {
-        Message({
+        new Message({
           showClose: true,
           message: '请输入搜索请求',
           duration: 2000,
-          type: 'warning'
+          type: 'warning',
         });
-        return
+        return;
       }
-      this.searchAnswer().then(this.successHandler, this.errorHandler)
+      this.searchAnswer().then(this.successHandler, this.errorHandler);
     },
     successHandler: function(answerResult) {
-      console.log("返回成功")
+      console.log('返回成功');
     },
     errorHandler: function(error) {
-      console.log("error: ", error)
+      console.log('error: ', error);
     },
     toggleRightWindow: function() {
-      this.$refs.rightWindow.toggle('right')
-    }
-  }
-}
+      this.$refs.rightWindow.toggle('right');
+    },
+  },
+};
 </script>
 
 <style scoped>

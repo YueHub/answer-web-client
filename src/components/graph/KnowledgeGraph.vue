@@ -1,62 +1,85 @@
 <template>
-  <canvas id="knowledge_graph" :width="width" :height="height">
-  </canvas>
+  <canvas id="knowledge_graph" :width="width" :height="height" />
 </template>
 
 <script scoped>
-var knowledgeGraph = require('./knowledge-graph')
+const knowledgeGraph = require('../thirdparty/graph/knowledge-graph');
 export default {
-  props: ['knowledgeGraphVOs', 'width', 'height'],
-  mounted() {
-    this.$nextTick(() => {
-      this.draw()
-    })
+  props: {
+    'knowledgeGraphVos': {
+      type: Array,
+      default: function() {
+        return [];
+      },
+    },
+    'width': {
+      type: String,
+      default: function() {
+        return '0';
+      },
+    },
+    'height': {
+      type: String,
+      default: function() {
+        return '0';
+      },
+    },
   },
   watch: {
-    knowledgeGraphVOs: function() {
-      this.draw()
-    }
+    'knowledgeGraphVos': function() {
+      this.draw();
+    },
+  },
+  mounted() {
+    this.$nextTick(() => {
+      this.draw();
+    });
   },
   methods: {
     draw: function() {
-      if (this.knowledgeGraphVOs == null || this.knowledgeGraphVOs == undefined) {
-        return
+      if (this.knowledgeGraphVOs == null ||
+        this.knowledgeGraphVOs == undefined) {
+        return;
       }
       // 初始化
-      var sys_knowledge_graph = knowledgeGraph.getArbor().ParticleSystem()
-      // 设置相关参数	stiffness:硬度	repulsion:排斥力	gravity:重力
-      sys_knowledge_graph.parameters({ stiffness: 900, repulsion: 2000, gravity: true, dt: 0.015 })
+      /* eslint-disable-next-line new-cap */
+      const sysKnowledgeGraph = newknowledgeGraph.getArbor().ParticleSystem();
+      // 设置相关参数 stiffness:硬度 repulsion:排斥力 gravity:重力
+      sysKnowledgeGraph.parameters(
+          {stiffness: 900, repulsion: 2000, gravity: true, dt: 0.015});
       // 读取绘图区域
-      sys_knowledge_graph.renderer = knowledgeGraph.Renderer("#knowledge_graph")
-      // 传入结点和连接
-      // 添加结点
+      sysKnowledgeGraph.renderer =
+        new knowledgeGraph.Renderer('#knowledge_graph');
 
-      for (var i = 0; i < this.knowledgeGraphVOs.length; i++) {
-        var knowledgeGraphStatements = this.knowledgeGraphVOs[i].knowledgeGraphStatements;
-        for (var j = 0; j < knowledgeGraphStatements.length; j++) {
-          // 添加结点
-          // 先添加普通结点 避免实体颜色不能正常显示
-          var objectName = knowledgeGraphStatements[j].object.name
-          var data = knowledgeGraphStatements[j].object
-          sys_knowledge_graph.addNode(objectName, data)
+      /* 传入结点和连接 */
+      /* 添加结点 */
+      for (let i = 0; i < this.knowledgeGraphVOs.length; i++) {
+        const knowledgeGraphStatements =
+          this.knowledgeGraphVOs[i].knowledgeGraphStatements;
+        for (let j = 0; j < knowledgeGraphStatements.length; j++) {
+          /* 添加结点 */
+          /* 先添加普通结点 避免实体颜色不能正常显示 */
+          const objectName = knowledgeGraphStatements[j].object.name;
+          let data = knowledgeGraphStatements[j].object;
+          sysKnowledgeGraph.addNode(objectName, data);
 
-          var subjectName = knowledgeGraphStatements[j].subject.name
-          data = knowledgeGraphStatements[j].subject
-          sys_knowledge_graph.addNode(subjectName, data)
-          // 添加连线
-          var sourceName = knowledgeGraphStatements[j].subject.name
-          var targetName = knowledgeGraphStatements[j].object.name
-          data = knowledgeGraphStatements[j].predicate
-          sys_knowledge_graph.addEdge(sourceName, targetName, data)
+          const subjectName = knowledgeGraphStatements[j].subject.name;
+          data = knowledgeGraphStatements[j].subject;
+          sysKnowledgeGraph.addNode(subjectName, data);
+          /* 添加连线 */
+          const sourceName = knowledgeGraphStatements[j].subject.name;
+          const targetName = knowledgeGraphStatements[j].object.name;
+          data = knowledgeGraphStatements[j].predicate;
+          sysKnowledgeGraph.addEdge(sourceName, targetName, data);
         }
       }
-      var nav = knowledgeGraph.Nav("#nav")
-      $(sys_knowledge_graph.renderer).bind('navigate', nav.navigate)
-      $(nav).bind('mode', sys_knowledge_graph.renderer.switchMode)
-      nav.init()
-    }
-  }
-}
+      const nav = new knowledgeGraph.Nav('#nav');
+      $(sysKnowledgeGraph.renderer).bind('navigate', nav.navigate);
+      $(nav).bind('mode', sysKnowledgeGraph.renderer.switchMode);
+      nav.init();
+    },
+  },
+};
 </script>
 
 <style scoped>

@@ -1,74 +1,83 @@
 <template>
   <div>
     <!-- 搜索引擎选择 -->
-    <search-type-select class="inline-block search-bar-type-select" :defaultValue="'0'" :selectOptions="selectOptions">
-    </search-type-select>
+    <search-type-select
+      :default-value="'0'"
+      :select-options="selectOptions"
+      class="inline-block search-bar-type-select"
+    />
 
     <div class="search-input-text-btn">
       <!-- 搜索串文本输入框 -->
-      <search-input-text ref="searchInputText" :searchBarTextValue="searchBarTextValue" @inputTextChangeListener="searchBarTextChange" @inputTextEnterListener="searchBarTextEnter">
-      </search-input-text>
+      <search-input-text
+        ref="searchInputText"
+        :search-bar-text-value="searchBarTextValue"
+        @inputTextChangeListener="searchBarTextChange"
+        @inputTextEnterListener="searchBarTextEnter"
+      />
 
       <!-- 搜索按钮 -->
-      <search-btn class="inline-block" @searchBtnClickListener="searchBarBtnClick">
-      </search-btn>
+      <search-btn
+        class="inline-block"
+        @searchBtnClickListener="searchBarBtnClick"
+      />
     </div>
   </div>
 </template>
 
 <script scoped>
-import { mapState, mapGetters } from 'vuex'
+import {mapState, mapGetters} from 'vuex';
 
-import searchTypeSelect from '@/components/common/searchBar/SearchTypeSelect'
-import searchInputText from '@/components/common/searchBar/SearchInputText'
-import searchBtn from '@/components/common/searchBar/SearchBtn'
+import searchTypeSelect from '@/components/common/searchBar/SearchTypeSelect';
+import searchInputText from '@/components/common/searchBar/SearchInputText';
+import searchBtn from '@/components/common/searchBar/SearchBtn';
 
 export default {
   components: {
     'search-type-select': searchTypeSelect,
     'search-input-text': searchInputText,
-    'search-btn': searchBtn
+    'search-btn': searchBtn,
   },
   data() {
     return {
       selectOptions: [{
         value: '0',
-        label: '知识搜索'
+        label: '知识搜索',
       }, {
         value: '1',
         label: '应用搜索',
-        disabled: true
+        disabled: true,
       }, {
         value: '2',
         label: '移动搜索',
-        disabled: true
+        disabled: true,
       }],
-      searchBarTextValue: this.searchQuery
-    }
+      searchBarTextValue: this.searchQuery,
+    };
   },
   computed: {
     ...mapState(['searchQuery']),
-    ...mapGetters(['getSearchActiveTag'])
+    ...mapGetters(['getSearchActiveTag']),
   },
   created() {
-    this.searchBarTextValue = this.searchQuery
+    this.searchBarTextValue = this.searchQuery;
   },
   methods: {
     moveText: function(shift) {
-      this.$refs.searchInputText.moveText(shift)
+      this.$refs.searchInputText.moveText(shift);
     },
     searchBarTextChange: function(searchInputTextValue) {
       this.searchBarTextValue = searchInputTextValue;
-      this.$emit('searchBarTextChangeListener', this.searchBarTextValue)
+      this.$emit('searchBarTextChangeListener', this.searchBarTextValue);
     },
     searchBarTextEnter: function() {
-      this.searchBarBtnClick()
+      this.searchBarBtnClick();
     },
     searchBarBtnClick: function() {
       this.$emit('searchBarBtnClickListener');
-    }
-  }
-}
+    },
+  },
+};
 </script>
 
 <style scoped>

@@ -1,10 +1,10 @@
-import Vue from 'vue'
-import Router from 'vue-router'
-import Index from '@/pages/index'
-import Result from '@/pages/result'
+import Vue from 'vue';
+import Router from 'vue-router';
+import Index from '@/pages/index';
+import Result from '@/pages/result';
 
 
-Vue.use(Router)
+Vue.use(Router);
 
 export default new Router({
   mode: 'history',
@@ -12,12 +12,12 @@ export default new Router({
     {
       path: '/index',
       name: 'Index',
-      component: Index
+      component: Index,
     },
     {
       path: '/result',
       name: 'Result',
-      component: Result
-    }
-  ]
-})
+      component: Result,
+    },
+  ],
+});

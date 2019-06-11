@@ -1,31 +1,51 @@
 <template>
   <div class="search-input-text">
-    <input id="search-input-text" type="text" placeholder="音乐 / 美食 / 阅读 / 电影..." v-model="searchInputTextValue" @keyup.enter="inputTextEnter" @input="inputTextChange" @change="inputTextChange" maxlength="50">
+    <input
+      id="search-input-text"
+      v-model="searchInputTextValue"
+      maxlength="50" type="text" placeholder="音乐 / 美食 / 阅读 / 电影..."
+      @keyup.enter="inputTextEnter"
+      @input="inputTextChange"
+      @change="inputTextChange"
+    >
   </div>
 </template>
 
 <script scoped>
 
 export default {
-  props: ['inputTextShift', 'searchBarTextValue'],
+  props: {
+    inputTextShift: {
+      type: String,
+      default: function() {
+        return '';
+      },
+    },
+    searchBarTextValue: {
+      type: String,
+      default: function() {
+        return '';
+      },
+    },
+  },
   data() {
     return {
       searchInputTextValue: this.searchBarTextValue,
-    }
+    };
   },
   methods: {
     inputTextChange: function() {
       this.$emit('inputTextChangeListener', this.searchInputTextValue);
     },
     inputTextEnter: function() {
-      this.$emit('inputTextEnterListener')
+      this.$emit('inputTextEnterListener');
     },
     moveText: function(shift) {
-      var paddingVal = '11px 0px 10px ' + shift + '%'
-      document.getElementById('search-input-text').style.padding = paddingVal
-    }
-  }
-}
+      const paddingVal = '11px 0px 10px ' + shift + '%';
+      document.getElementById('search-input-text').style.padding = paddingVal;
+    },
+  },
+};
 </script>
 
 <style scoped>
@@ -73,8 +93,6 @@ export default {
   -webkit-box-shadow: 0 0 7px #3385ff;
   box-shadow: 0 0 7px #3385ff;
 }
-
-
 
 /* placeholder  */
 
