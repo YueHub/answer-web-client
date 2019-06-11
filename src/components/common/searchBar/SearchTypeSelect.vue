@@ -1,28 +1,43 @@
 <template>
   <div class="search-type-select">
     <el-select v-model="value" placeholder="请选择">
-      <el-option v-for="item in selectOptions" :key="item.value" :label="item.label" :value="item.value" :disabled="item.disabled">
-      </el-option>
+      <el-option
+        v-for="item in selectOptions" :key="item.value" :label="item.label"
+        :value="item.value" :disabled="item.disabled"
+      />
     </el-select>
   </div>
 </template>
 
 <script>
 export default {
-  props: ['defaultValue', 'selectOptions'],
+  props: {
+    defaultValue: {
+      type: String,
+      default: function() {
+        return '';
+      },
+    },
+    selectOptions: {
+      type: Array,
+      default: function() {
+        return [];
+      },
+    },
+  },
   data() {
     return {
-      value: this.defaultValue
-    }
-  }
-}
+      value: this.defaultValue,
+    };
+  },
+};
 </script>
 
 <style>
 /* 下拉列表项内容 */
 .search-type-select .el-input__inner {
   /* Positioning 位置相关 */
-  
+
   /* Box model 尺寸相关 */
   width: 100px;
   height: 40px;
@@ -31,7 +46,6 @@ export default {
   /* Visual 视觉效果 */
   background: #3385ff;
   color: white;
-  
 }
 
 

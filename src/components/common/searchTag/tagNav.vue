@@ -1,7 +1,7 @@
 <template>
   <div class="div-nav-tag">
     <ul class="nav-tag">
-      <li :key="navTag.id" v-for="navTag in navTags">
+      <li v-for="navTag in navTags" :key="navTag.id">
         <a class="movie-link" href="#">{{ navTag.name }}</a>
       </li>
     </ul>
@@ -13,10 +13,10 @@
 export default {
   data() {
     return {
-      navTags: this.$store.state.navTags
-    }
-  }
-}
+      navTags: this.$store.state.navTags,
+    };
+  },
+};
 </script>
 
 <style scoped>

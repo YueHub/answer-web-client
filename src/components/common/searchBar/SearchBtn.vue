@@ -9,9 +9,9 @@ export default {
   methods: {
     searchBtnClick: function() {
       this.$emit('searchBtnClickListener');
-    }
-  }
-}
+    },
+  },
+};
 </script>
 
 <style scoped>
@@ -32,7 +32,7 @@ export default {
   font-size: 15px;
   letter-spacing: 1px;
   outline: medium;
-  
+
   /* Visual 视觉效果 */
   background: #3385ff;
   color: white;
