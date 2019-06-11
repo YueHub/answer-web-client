@@ -53,7 +53,7 @@
         </div>
         <div class="result-card">
           <div
-            v-for="queryResult in shortAnswerPolysemant.queryResults"
+            v-for="(queryResult, index) in shortAnswerPolysemant.queryResults"
             :key="queryResult.id"
             class="answer-item"
           >
@@ -80,7 +80,8 @@
         <div
           v-for="activePolysemantNamedEntitie in
             shortAnswerPolysemant.activePolysemantNamedEntities"
-          :key="activePolysemantNamedEntitie.id"
+          :key="activePolysemantNamedEntitie == null ?
+            null: activePolysemantNamedEntitie.id"
           class="result-card-explain"
         >
           <template v-if="activePolysemantNamedEntitie != null">

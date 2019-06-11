@@ -37,13 +37,13 @@ export default {
   },
   methods: {
     draw: function() {
-      if (this.knowledgeGraphVOs == null ||
-        this.knowledgeGraphVOs == undefined) {
+      if (this.knowledgeGraphVos == null ||
+        this.knowledgeGraphVos == undefined) {
         return;
       }
       // 初始化
       /* eslint-disable-next-line new-cap */
-      const sysKnowledgeGraph = newknowledgeGraph.getArbor().ParticleSystem();
+      const sysKnowledgeGraph = new knowledgeGraph.getArbor().ParticleSystem();
       // 设置相关参数 stiffness:硬度 repulsion:排斥力 gravity:重力
       sysKnowledgeGraph.parameters(
           {stiffness: 900, repulsion: 2000, gravity: true, dt: 0.015});
@@ -53,9 +53,9 @@ export default {
 
       /* 传入结点和连接 */
       /* 添加结点 */
-      for (let i = 0; i < this.knowledgeGraphVOs.length; i++) {
+      for (let i = 0; i < this.knowledgeGraphVos.length; i++) {
         const knowledgeGraphStatements =
-          this.knowledgeGraphVOs[i].knowledgeGraphStatements;
+          this.knowledgeGraphVos[i].knowledgeGraphStatements;
         for (let j = 0; j < knowledgeGraphStatements.length; j++) {
           /* 添加结点 */
           /* 先添加普通结点 避免实体颜色不能正常显示 */
