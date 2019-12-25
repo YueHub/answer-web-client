@@ -122,7 +122,7 @@ export default {
   }
   .index-search-bar {
     margin: auto;
-    width: 70%;
+    width: 75%;
   }
   .index-tag-cloud {
     margin-top: 17%;
