@@ -93,9 +93,9 @@ export default {
   .search-input-text-btn {
     position: relative;
     float: left;
-    margin-left: 1%;
-    width: 85.2%;
-    height: 40px;
+    margin-left: 10px;
+    width: calc(85% - 10px);
+    height: 50px;
   }
 }
 
@@ -107,9 +107,9 @@ export default {
   .search-input-text-btn {
     position: relative;
     float: left;
-    margin-left: 0.5%;
-    width: 85.2%;
-    height: 40px;
+    margin-left: 30px;
+    width: calc(90% - 30px);
+    height: 50px;
   }
 }
 
@@ -120,8 +120,8 @@ export default {
   .search-input-text-btn {
     position: relative;
     float: left;
-    width: 100%;
-    height: 40px;
+    width: calc(100%);
+    height: 50px;
   }
 }
 </style>

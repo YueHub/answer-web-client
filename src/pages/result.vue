@@ -358,7 +358,7 @@ export default {
   }
   .result-search-bar {
     margin: auto;
-    width: 50%;
+    width: 70%;
   }
   .answer-result {
     margin-top: 15%;
