@@ -100,7 +100,7 @@
       <!-- knowledge graph -->
       <div class="result-item">
         <div
-          v-if="answerResult != null && answerResult.knowledgeGraphVOs != null"
+          v-if="answerResult != null && answerResult.knowledgeGraphVos != null"
           id="knowledge-graph"
         >
           <div>
@@ -114,7 +114,7 @@
             <div>
               <knowledge-graph
                 ref="knowledgeGraph"
-                :knowledge-graph-vos="answerResult.knowledgeGraphVOs"
+                :knowledge-graph-vos="answerResult.knowledgeGraphVos"
                 :width="knowledgeGraphWidth"
                 :height="knowledgeGraphHeight"
               />
